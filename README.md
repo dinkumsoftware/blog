@@ -55,4 +55,13 @@ https://www.gnu.org/prep/maintain/html_node/License-Notices-for-Other-Files.html
 
 GIT only "knows about Apache 2.0, So for now I'll put everything under that.
 
+I'm writing in Markdown, so I ought to know a little about it.
+http://guides.github.com/overviews/mastering-markdown/
+
+I made some initial wiki pages using on-line editor.
+For now, just keeping the blog in the readme.md.  github has capability to
+generate html (under dinkumsoftware.org if I want).  I'll need to explore that
+sometime.
+
+Enough for tonite.
 
