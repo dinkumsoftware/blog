@@ -32,6 +32,11 @@ Now, I made my first mistake, didn't take long.
 So all my repos should start with dinkum-.  Kill this blog and recreate it
 as dinkumsoftware/dinkum-blog.
 
+Turns out I can rename it in github:
+
+https://help.github.com/articles/renaming-a-repository
+Under repo settings
+
 
 I originally wanted to put all my work under GNU license, but that means
 that others can't incorporate it with proprietary software.  While I'm
