@@ -85,7 +85,7 @@ dinkum-project a python "package" with some executables that let me
 generate a new project with a one-liner, allow refactoring between
 projects etc.  But I need small steps.
 
-So near term goal:
+So near term goal: TODO
 
 - repo:dinkum-sandbox
   - executables:
@@ -94,7 +94,7 @@ So near term goal:
 
 As I am writing markdown for my first time, I git pushed and had a couple of
 problems.
-TODO
+DONE
 
    - [x] the mention of jeffknupp wasn't highlighted.
          Turns out @mentions only work in descriptions and comments of
@@ -133,9 +133,9 @@ but it follows GFM conventions on new lines. @adam-p
 
 My todo marker has historically been todo inside of angle brackets, but it
 disappears.  Since you can write in-line html, MarkDown gobbles up what
-look like html tags.  So I need to change my TODO marker.
+look like html tags.  So I need to change my todo marker.
 
-What does eclipse use by default?  Looks like TODO .. use that.
+What does eclipse use by default?  Looks like todo(all caps) .. use that.
 Follow the GFM task list convention for todo's even though it
 doesn't seem to work in Markdown files in the project (like this one).  It
 is still readable.
@@ -143,10 +143,6 @@ is still readable.
 Fixed up the formatting for short term dinkum-sandbox list.
 
 Make some dinkum markdown rules on wiki
-- dinkumsoftware markdown rules
-  - text in 80 column windows with hard returns
-  - TODO is the todo marker
-  - Use GFM task lists for todo lists
 
 
 
