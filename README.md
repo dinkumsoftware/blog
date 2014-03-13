@@ -85,4 +85,11 @@ So near term goal:
       executables: dinkum_sandbox_hello.py      # prints hello
                    dinkum_sandbox_goodbye.py    # prints goodbye
 
+As I am writing markdown for my first time, I git pushed and had a couple of problems.
+   - [ ] the mention of jeffknupp wasn't highlighted
+   - [ ] the formatting of my near term goals all ran together.
+
+Does this mention me?
+@dinkumsoftware
+
 
