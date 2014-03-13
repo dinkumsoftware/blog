@@ -72,7 +72,6 @@ reasonable project structure for python.  I'm mucked around a bit over the
 last year without coming up with my own solution.  Found a great web site
 that generally covers it all:
 http://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
-@jeffknupp
 
 I'm in agreement with most of the things he says and he lead me to cookiecutter which
 seems like a great solution for generating project templates and use on line resources
@@ -86,10 +85,11 @@ So near term goal:
                    dinkum_sandbox_goodbye.py    # prints goodbye
 
 As I am writing markdown for my first time, I git pushed and had a couple of problems.
-   - [ ] the mention of jeffknupp wasn't highlighted
+   - [ ] <todo>
+   - [x] the mention of jeffknupp wasn't highlighted.
+         Turns out @mentions only work in descriptions and comments of
+         Issues and Pull requests.
    - [ ] the formatting of my near term goals all ran together.
 
-Does this mention me?
-@dinkumsoftware
 
 
