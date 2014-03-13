@@ -65,3 +65,24 @@ sometime.
 
 Enough for tonite.
 
+2014-03-13 tc@DinkumSoftware.com 
+
+The general thrust here is to do open source python development.  I need
+reasonable project structure for python.  I'm mucked around a bit over the
+last year without coming up with my own solution.  Found a great web site
+that generally covers it all:
+http://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/
+@jeffknupp
+
+I'm in agreement with most of the things he says and he lead me to cookiecutter which
+seems like a great solution for generating project templates and use on line resources
+for testing, packaging, and distributing python code.  I want to eventually end up with
+dinkum-project a python "package" with some executables that let me generate a new project
+with a one-liner, allow refactoring between projects etc.  But I need small steps.
+
+So near term goal:
+   repo:dinkum-sandbox
+      executables: dinkum_sandbox_hello.py      # prints hello
+                   dinkum_sandbox_goodbye.py    # prints goodbye
+
+
