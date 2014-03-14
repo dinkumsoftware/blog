@@ -85,12 +85,7 @@ dinkum-project a python "package" with some executables that let me
 generate a new project with a one-liner, allow refactoring between
 projects etc.  But I need small steps.
 
-So near term goal: TODO
-
-- repo:dinkum-sandbox
-  - executables:
-    - *dinkum_sandbox_hello.py*      prints hello
-    - *dinkum_sandbox_goodbye.py*    prints goodbye
+So near term goal: MOVED to line 150
 
 As I am writing markdown for my first time, I git pushed and had a couple of
 problems.
@@ -142,7 +137,79 @@ is still readable.
 
 Fixed up the formatting for short term dinkum-sandbox list.
 
-Make some dinkum markdown rules on wiki
+Made some dinkum markdown rules on wiki
+
+2014-03-14 tc@DinkumSoftware.com 
+
+Pop the stack a bit to:
+
+So near term goal: TODO
+
+- repo:dinkum-sandbox
+  - executables:
+    - *dinkum_sandbox_hello.py*      prints hello
+    - *dinkum_sandbox_goodbye.py*    prints goodbye
+  - shared code:
+    - *sandbox.py*                   common code, in sandbox package?
+                                     or dinkum.sandbox package?
+
+End of the chain is cookiecutter.
+
+Everything in a virtual environment.
+virtualenvwrapper installs other packages.
+
+    pip install virtualenvwrapper
+no pip.
+
+    sudo apt-get install python-pip
+I put this on wiki under Dinkum Project OS packages required.
+
+  pip install virtualenvwrapper:
+Installed /home/tc/projects/dinkum-blog/build/virtualenvwrapper/pbr-0.6-py2
+  error: /usr/local/lib/python2.7/dist-packages/virtualenvwrapper: Permission denied
+Storing complete log in /home/tc/.pip/pip.log
+
+It left the build directory behind.
+Looks like it needs to be root for installing into system directories.
+
+      sudo pip install virtualenvwrapper
+
+worked, cleaned up build directory.
+Now diddle my .bashrc
+http://virtualenvwrapper.readthedocs.org/en/latest/install.html says:
+''''
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+source /usr/local/bin/virtualenvwrapper.sh
+````
+http://www.jeffknupp.com/blog/2013/08/16/open-sourcing-a-python-project-the-right-way/ says:
+````
+$ echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.zshrc
+````
+
+There is a default of .virtualenvs built into virtualenvwrapper.sh.
+That works for me.  There is no default for PROJECT_HOME, I want it to be
+projects.
+```
+cat <<EOF >> ~/.bashrc
+
+# virtualenvwrapper setup
+export PROJECT_HOME=$HOME/projects
+source /usr/local/bin/virtualenvwrapper.sh
+EOF
+source ~/.bashrc
+
+```
+
+virtualenv doesn't appear to have man pages.
+
+Ubuntu 12.04.02LTS package: virtualenvwrapper
+
+Made a wiki page for a cheat sheet:
+
+https://github.com/dinkumsoftware/dinkum-blog/wiki/_new?wiki[name]=virtualenvwrapper
+
+enuf for now.
 
 
 
