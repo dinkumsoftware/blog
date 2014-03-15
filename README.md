@@ -32,5 +32,4 @@ Copyright 2014 Dinkum Software
 
 ====
 Copyright 2014 [Dinkum Software] (http://www.DinkumsoftWare.com)
-
-[Apache License, Version 2.0] (http://github.com/dinkumsoftware/dinkum-blog/wiki)
+Apache License, [Version 2.0] (http://github.com/dinkumsoftware/dinkum-blog/wiki)
