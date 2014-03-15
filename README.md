@@ -13,6 +13,7 @@ DinkumSoftware.
 
 enjoy
 tc
+
 ----
 Copyright 2014 Dinkum Software
 
@@ -28,5 +29,6 @@ Copyright 2014 Dinkum Software
    See the License for the specific language governing permissions and
    limitations under the License.
 ----
+
 Copyright 2014 [Dinkum Software] (http://www.DinkumsoftWare.com)
 Apache License, [Version 2.0] (http://github.com/dinkumsoftware/dinkum-blog/wiki)
