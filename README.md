@@ -1,8 +1,19 @@
 dinkum-blog
 ====
 
-***A running blog of Dinkum Software's open source development activity
-not elsewhere documented.***
+-  *Dinkum's Blog*
+A running account of DinkumSoftware's FOSS (Free and Open Source Software)
+activities.
+
+-  [*Dinkum's Wiki*] (git@github.com:dinkumsoftware/dinkum-blog.wiki.git)
+A read-only wiki that has pointers and information on tools used by
+DinkumSoftware.
+
+enjoy
+tc
+
+====
+
 
 Copyright 2014 Dinkum Software
 
@@ -19,18 +30,7 @@ Copyright 2014 Dinkum Software
    limitations under the License.
 
 
-Dinkum's Blog
-A running account of DinkumSoftware's FOSS (Free and Open Source Software)
-activities.
-
-[Dinkum's Wiki] (git@github.com:dinkumsoftware/dinkum-blog.wiki.git)
-A read-only wiki that has pointers and information on tools used by
-DinkumSoftware.
-
-enjoy
-tc
-
-
-
+====
 Copyright 2014 [Dinkum Software] (http://www.DinkumsoftWare.com)
+
 [Apache License, Version 2.0] (http://github.com/dinkumsoftware/dinkum-blog/wiki)
