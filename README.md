@@ -1,11 +1,13 @@
 dinkum-blog
 ====
 
--  *Dinkum's Blog*
+-  [*Dinkum's Blog*]
+(http://github.com/dinkumsoftware/dinkum-blog/blob/master/dinkum-blog.txt)
 A running account of DinkumSoftware's FOSS (Free and Open Source Software)
 activities.
 
--  [*Dinkum's Wiki*] (git@github.com:dinkumsoftware/dinkum-blog.wiki.git)
+-  [*Dinkum's Wiki*]
+(http://github.com/dinkumsoftware/dinkum-blog/wiki)
 A read-only wiki that has pointers and information on tools used by
 DinkumSoftware.
 
@@ -13,7 +15,6 @@ enjoy
 tc
 
 ====
-
 
 Copyright 2014 Dinkum Software
 
@@ -28,7 +29,6 @@ Copyright 2014 Dinkum Software
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-
 
 ====
 Copyright 2014 [Dinkum Software] (http://www.DinkumsoftWare.com)
