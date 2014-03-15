@@ -28,7 +28,7 @@ Copyright 2014 Dinkum Software
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-----
 
+----
 Copyright 2014 [Dinkum Software] (http://www.DinkumsoftWare.com)
-Apache License, [Version 2.0] (http://github.com/dinkumsoftware/dinkum-blog/wiki)
+Apache License, [Version 2.0] (http://www.apache.org/licenses/LICENSE-2.0)
