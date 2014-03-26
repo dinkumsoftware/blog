@@ -225,3 +225,7 @@ on the net.  A price to pay.
 
 So move this file to dinkum-blog/dinkum-blog.txt
 and fix up README.md to point to (a) blog and (b) wiki
+
+2014-03-25 tc@DinkumSoftware.com 
+
+Working on setting up servers and documenting the tips.
