@@ -1,10 +1,13 @@
-dinkum-blog.txt
-====
+dinkum-working-notes.txt
+Copyright 2014-2016 Dinkum Software
+
+A running blog-like account of DinkumSoftware's FOSS activity.
+https://github.com/dinumsoftware/dinkum-working-notes
+
 
 A running blog of Dinkum Software's open source development activity
 not elsewhere documented.
 
-Copyright 2014 Dinkum Software
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -229,3 +232,43 @@ and fix up README.md to point to (a) blog and (b) wiki
 2014-03-25 tc@DinkumSoftware.com 
 
 Working on setting up servers and documenting the tips.
+
+2016-05-08 tc@DinkumSoftware.com 
+
+After a brief pause (2 yrs) getting back to publishing and moving all my
+code from private subversion to github.  Hopefully I can get farther this
+time.
+
+I'm going to have one hopefully massive repo in github/dinkum for now.
+Later I can package individucal pieces.  I'm keeping running working notes
+(this file) in a separate repo only to avoid agony when I switch branches.
+It avoids premature commits and/or stashes.
+
+Decided to publish tc@DinkumSoftware.com as timestamp on files.  I thought
+I always avoided it but, turns out it was in this file.  Couldn't face
+setting up another email address and now I don't have to edit software
+that I publish.  We'll see if email traffic builds with (a) real users or
+(b) more likely spam.
+
+I'm also setting up a new computer (casey) at the same time.
+I'll transfer exist paper notes to casey-setup.txt.
+
+Git setup <todo> move to dinkum
+
+git config --global  user.name    <your name>
+git config --global  user.email   <your email>
+git config --global  core.editor   emacs
+git config --global  merge.tool    meld
+git config --global  diff.guitool  meld
+git config --global  merge.cmd=meld $LOCAL $MERGED $REMOTE --output $MERGED
+                                            # control windows presented on
+                                            # a merge.
+git config --global  difftool.prompt=false
+git config --global  push.default matching  # Allow push to non-upstream
+                                            #repo of same name as local
+git config --global  credential.helper=cache --timeout=28800
+                                            # How long git remembers passwd
+
+
+<todo> kill the working notes wiki by moving content into dinkum.
+

@@ -1,0 +1,39 @@
+Notes on setting up casey on Ubuntu 14.04
+
+Packages Installed ===========================
+Note: baseline system snapshotted in ~/casey
+
+Ubuntu Software Manager:
+    Blueman Bluetooth Manager
+    Tweak Tool
+
+
+apt-get install:
+    git
+    emacs24
+    python-pip
+
+sudo pip install
+     virtualenv
+     grip    # MarkDown renderer
+    
+
+Blue Tooth Mouse ===========================
+2016-04-17.txt tc@DinkumSoftware.com  Initial
+
+You need an "old" blue tooth mouse.
+There are two new bluetooth standards and Ubuntu 14.04 doesn't support them.
+
+Ubuntu Software Center: Blueman Bluetooth Manager
+
+
+Settings =====================================
+    Appearance
+        Show Desktop Icon
+	Enable Workspaces
+	Sow menus in window title Bar
+
+Tweak Tool ===================================
+      Typing
+          Ctrl Key Position
+	      Swap Ctrl and Caps Lock
