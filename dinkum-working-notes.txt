@@ -272,3 +272,104 @@ git config --global  credential.helper=cache --timeout=28800
 
 <todo> kill the working notes wiki by moving content into dinkum.
 
+Working on the private site to mount a bunch of usb disks.
+
+Also got ssh timing out with:
+tc@luna:~$ Write failed: Broken pipe
+
+ServerAliveInterval
+         Sets a timeout interval in seconds after which if no data has
+         been received from the server, ssh(1) will send a message through
+         the encrypted channel to request a response from the server.  The
+         default is 0, indicating that these messages will not be sent to
+         the server.  This option applies to protocol version 2 only.
+
+ServerAliveCountMax
+
+	by default this is set to 3. Therefore once the
+	ServerAliveInterval has sent 3 small packs of info to your
+	server it will then automatically log out. Setting it to 1200
+	means this process will have to occur at least 1200 times. In
+	short you should be connected at least more than 12 days.
+
+Fixed via:
+    /etc/ssh/ssh_config
+        Host *
+	# 3 days (2 min * 2160 tries)
+	ServerAliveInterval  120
+	ServerAliveCountMax 2160
+
+2016-05-10
+committed root-rsync-push
+
+Looks like the FQDN doesn't work on my servers.
+Looks like two possible fixes:
+    /etc/resolv.conf    (or actually another file as it is built dynamically)
+    or /etc/hosts       on the 127.0.1.1 line
+
+Try:
+    /etc/hosts
+        127.0.1.1	bert   ===>
+        127.0.1.1	bert.DinkumSoftware.com bert
+                        # ORDER important. fqdn must come first
+
+That worked.
+
+But bert has a static IP.
+Try:
+    /etc/hosts
+	50.78.19.59    bert.DinkumSoftware.com bert
+
+That seemed to fail. Probably want to specify the IP somewhere in the network or the like.
+
+Add 127 line to casey-setup and newly created server-setup
+
+  On bert, the following fails
+    sudo su
+    ssh localhost
+
+Because I have 
+
+/etc/ssh/sshd-config
+#PasswordAuthentication yes
+PermitRootLogin without-password
+#PermitRootLogin yes
+
+# Set this to 'yes' to enable PAM authentication, account processing,
+# and session processing. If this is enabled, PAM authentication will
+# be allowed through the ChallengeResponseAuthentication and
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication via ChallengeResponseAuthentication may bypass
+# the setting of "PermitRootLogin without-password".
+# If you just want the PAM account and session checks to run without
+# PAM authentication, then enable this but set PasswordAuthentication
+# and ChallengeResponseAuthentication to 'no'.
+UsePAM yes
+
+I want:
+
+PermitRootLogin                 without-password  # default
+ChallengeResponseAuthentication no                # default
+PasswordAuthentication          no		  # uncomment and edit yes=>no
+UsePAM                          yes		  # default
+
+IMPORTANT! You must ssh-copy-id FIRST!
+So all I have to do is change is:
+PasswordAuthentication          no		  # uncomment and edit yes=>no
+
+# Allow ssh from tc to root
+# drwx------ 2 tc tc 4096 May 10 16:43 /home/tc/.ssh
+# -rw------- 1 tc tc  404 May 10 16:41 /home/tc/.ssh/authorized_keys
+
+sudo mkdir -p                              /root/.ssh
+sudo chmod 700                             /root/.ssh
+sudo touch                                 /root/.ssh/authorized_keys
+cat /home/tc/.ssh/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys > /dev/null
+sudo chmod 600                             /root/.ssh/authorized_keys
+
+Move this to casey-setup and server-setup
+
+2015-05-18 tc@DinkumSoftware.com 
+renamed root-rsync-mirror-push dinkum-root-rsync-mirror-push 
+
+<todo> deploy it to luna, ernie, bert in /usr/local/sbin and test it.

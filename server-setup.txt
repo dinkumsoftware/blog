@@ -1,0 +1,11 @@
+server-setup.txt
+Notes on setting up an Ubuntu 14.04 server
+
+2016-05-10  Initial, FQDN
+2016-05-11 tc@DinkumSoftware.com sshd and ssh to/from localhost
+
+Make FQDN (hostname -f) work ==================
+Allow ssh to localhost, no passwords ==========
+    See casey-setup.txt
+
+

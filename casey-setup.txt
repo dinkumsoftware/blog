@@ -1,4 +1,11 @@
-Notes on setting up casey on Ubuntu 14.04
+Notes on setting up casey(a laptop) on Ubuntu 14.04
+
+2016-05-08 tc@DinkumSoftware.com Initial
+2016-05-08 tc@DinkumSoftware.com Supply default dns-search
+2016-05-10 tc@DinkumSoftware.com Make FQDN work
+2016-05-11 tc@DinkumSoftware.com sshd and ssh to/from localhost
+2016-05-18 tc@DinkumSoftware.com install meld
+
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -12,6 +19,8 @@ apt-get install:
     git
     emacs24
     python-pip
+    openssh-server
+    meld
 
 sudo pip install
      virtualenv
@@ -26,7 +35,6 @@ There are two new bluetooth standards and Ubuntu 14.04 doesn't support them.
 
 Ubuntu Software Center: Blueman Bluetooth Manager
 
-
 Settings =====================================
     Appearance
         Show Desktop Icon
@@ -37,3 +45,39 @@ Tweak Tool ===================================
       Typing
           Ctrl Key Position
 	      Swap Ctrl and Caps Lock
+
+Default DNS Domain ==========================
+    Add to /etc/network/interfaces
+        dns-search DinkumSoftware.com
+    reboot
+
+SSH no timeout ================================
+    /etc/ssh/ssh_config
+        Host *
+	# 3 days (2 min * 2160 tries)
+	ServerAliveInterval  120
+	ServerAliveCountMax 2160
+
+Make FQDN (hostname -f) work ==================
+    name=$(hostname)
+    edit /etc/hosts
+        127.0.1.1	$name   ===>
+        127.0.1.1	${name}.DinkumSoftware.com  $name
+                        # NOTE ORDER IMPORTANT. fqdn must come first
+
+Allow ssh to localhost, no passwords ===============================
+
+ssh-copy-id localhost
+
+# ssh-copy-id root@localhost
+# Can't on ubuntu, run this script
+sudo mkdir -p                              /root/.ssh
+sudo chmod 700                             /root/.ssh
+sudo touch                                 /root/.ssh/authorized_keys
+cat /home/tc/.ssh/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys > /dev/null
+sudo chmod 600                             /root/.ssh/authorized_keys
+
+# Don't allow username/passwords
+sudo edit /etc/ssh/sshd_config
+    PasswordAuthentication no	# uncomment and edit yes=>no
+sudo service ssh restart
