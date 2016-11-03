@@ -372,4 +372,132 @@ Move this to casey-setup and server-setup
 2015-05-18 tc@DinkumSoftware.com 
 renamed root-rsync-mirror-push dinkum-root-rsync-mirror-push 
 
+
 <todo> deploy it to luna, ernie, bert in /usr/local/sbin and test it.
+
+2016-05-20
+
+Installed wireshark.
+Was about to put myself in wireshark group to avoid running it as root as suggested by
+the documentation.... but there is no group wireshark.
+
+
+https://ask.wireshark.org/questions/7523/ubuntu-machine-no-interfaces-listed
+$ sudo apt-get install wireshark
+$ sudo dpkg-reconfigure wireshark-common 
+$ sudo usermod -a -G wireshark $USER
+$ sudo reboot
+
+
+2016-05-30
+Python plotting librarys:
+    matplotlib
+    Pyqtgraph
+    plot.ly
+
+
+2016-06-12 tc@DinkumSoftware.com
+Installed zenmap
+    
+2016-10-26
+
+Back from summer of sailing.  Fixing up svn.
+Installed subversion on casey.
+
+Prior work in svn-recovery-2015-01-02.readme.txt
+
+Try to checkout:
+svn checkout svn+ssh://eth0.bert.dinkumsoftware.com/home/tc/network-services/svn svn-root
+It worked.  I must have fixed it before. (dump before error, dump after error, load together)
+
+Never easy....
+The file count under active doesn't match via find -type f | wc -l
+  active:
+    casey:    23096		13G
+    orphan:   42094		25G
+  yesterday's news:
+    casey:    937		9.2G		
+    orphan:   not present
+
+
+ssh ernie;cd /home/dinkum/opt
+[tc@ernie opt]$ svnadmin verify svn
+svnadmin: Reading one svndiff window read beyond the end of the representation
+
+ssh bert; cd network-services
+svnadmin verify svn
+* Verified revision 1513.
+
+
+<todo> clean up:
+    ernie: /home/dinkum/opt/svn-recovery
+    luna: ~data/svn-root
+    bert: ~/network-services/svn ?
+
+So... ernie did not get fixed, but yet I can check out
+all of svn from ernie without an error.  Must be
+a client side change on casey.... but serious difference in file size.
+
+
+Check it out from bert
+svn checkout svn+ssh://eth0.bert.dinkumsoftware.com/home/tc/network-services/svn/trunk svn-root-bert
+
+2016-10-27 tc@DinkumSoftware.com
+
+svn on bert and ernie differ.  Makes senses as there have been commits to ernie since then.
+wait... everything is pointing to bert, including orphan.
+So why did diff produce differences?
+
+OK.... so call bert the gospel svn.
+checkout both the active/yesterdays-news to casey:
+
+
+tc@casey:~/projects$ svn checkout svn+ssh://eth0.bert.dinkumsoftware.com/home/tc/network-services/svn/trunk/active svn-root-active
+		     svn checkout svn+ssh://eth0.bert.dinkumsoftware.com/home/tc/network-services/svn/trunk/yesterdays-news  svn-root-yesterdays-news
+
+<todo> External disk isn't working.  It gets an error when you to write to it
+
+
+<todo> Rest of orphan to xfer:
+       Pictures (desktop mostly), Ernie pictures to bert?
+       emacs settings (compare against svn)
+       bin (compare against svn/git)
+       encrypted bin
+       Desktop
+
+<todo> check bert firewall setting, shut down all and switch to vpn.
+
+2016-11-01 tc@DinkumSoftware.com
+
+meganet is retiring cape.com.  I should use the opportunity to switch ISPs, but first I'll convert.
+They are mapping:
+    X@cape.com => X@meganet.net
+    X@dinkumsoftware.com => Y@cape.com => Y@meganet.net
+Servers:
+    pop.meganet.net
+    smtp.meganet.net
+Same username/password
+They are mapping X@dinkumsoftware.com addresses, so don't have to tell anyone externally.
+
+
+General email plan: <todo>
+x   get casey thunderbird email working with meganet addresses
+x   switch my phone and tablet
+        <todo>
+        can't send mail from phone reliably.  Works sometimes. (tablet works ok).  There is an icon on failure.
+x   tell debbie about the switch, url: meganet.net/cape-email-conversion for instructions
+    transfer all of orphan email to casey (thunderbird to thunderbird)
+    transfer some mailing lists
+    finish up orphan empty
+    transfer all of nellie email to casey (disk swap)
+    switch email providers: (maybe search archived mail for others)
+        2 pop boxes
+        tc:     vendor content nic-guru hello bcc jedgar
+	debbie:
+	Less than or equal to meganet charges
+    set up imap server on bert
+
+
+
+
+

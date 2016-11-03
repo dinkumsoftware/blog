@@ -4,8 +4,11 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016-05-08 tc@DinkumSoftware.com Supply default dns-search
 2016-05-10 tc@DinkumSoftware.com Make FQDN work
 2016-05-11 tc@DinkumSoftware.com sshd and ssh to/from localhost
-2016-05-18 tc@DinkumSoftware.com install meld
-
+2016-05-18 tc@DinkumSoftware.com apt-get install meld
+2016-06-12 tc@DinkumSoftware.com apt-get install zenmap
+2016-10-26 tc@DinkumSoftware.com apt-get install subversion
+2016-10-27 tc@DinkumSoftware.com apt-get install gimp
+2016-10-27 tc@DinkumSoftware.com apt-get install encfs
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -21,6 +24,10 @@ apt-get install:
     python-pip
     openssh-server
     meld
+    wireshark
+    zenmap
+    subversion
+bu14bu14bu14bbbbbbb    gimp
 
 sudo pip install
      virtualenv
@@ -81,3 +88,4 @@ sudo chmod 600                             /root/.ssh/authorized_keys
 sudo edit /etc/ssh/sshd_config
     PasswordAuthentication no	# uncomment and edit yes=>no
 sudo service ssh restart
+
