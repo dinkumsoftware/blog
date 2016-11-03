@@ -9,6 +9,8 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016-10-26 tc@DinkumSoftware.com apt-get install subversion
 2016-10-27 tc@DinkumSoftware.com apt-get install gimp
 2016-10-27 tc@DinkumSoftware.com apt-get install encfs
+2016-11-03 tc@DinkumSoftware.com clean up typos
+                                 reformat *.debs for cut/paste
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -19,15 +21,9 @@ Ubuntu Software Manager:
 
 
 apt-get install:
-    git
-    emacs24
-    python-pip
-    openssh-server
-    meld
-    wireshark
-    zenmap
-    subversion
-bu14bu14bu14bbbbbbb    gimp
+    git emacs24 python-pip openssh-server meld wireshark zenmap \
+    subversion gimp tree
+
 
 sudo pip install
      virtualenv
