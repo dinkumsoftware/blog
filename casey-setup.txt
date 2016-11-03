@@ -19,10 +19,10 @@ Ubuntu Software Manager:
     Blueman Bluetooth Manager
     Tweak Tool
 
-
-apt-get install:
+sudo apt-get install \
     git emacs24 python-pip openssh-server meld wireshark zenmap \
-    subversion gimp tree
+    subversion gimp tree unity-tweak-tool
+
 
 
 sudo pip install
@@ -42,12 +42,25 @@ Settings =====================================
     Appearance
         Show Desktop Icon
 	Enable Workspaces
-	Sow menus in window title Bar
+	Show menus in window title Bar
 
 Tweak Tool ===================================
       Typing
           Ctrl Key Position
 	      Swap Ctrl and Caps Lock
+
+Unity Tweak Tool =============================
+      windows manager
+        Windows snapping
+	    windows snappying:off
+        HotCorners   
+	    Top is spread all windows 
+        Additional
+	    titlebar actions
+	        double click: vertical expand
+		middle click: horizontal expand
+	    autoraise: on
+	    focus mode: sloppy
 
 Default DNS Domain ==========================
     Add to /etc/network/interfaces
