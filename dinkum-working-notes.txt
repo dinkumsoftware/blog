@@ -552,6 +552,6 @@ Not a good solution. How about:
     if it doesn't exist, use 
         environment variable: USER
 
-
-
-
+NOTE WELL: These definitions must be in .profile (NOT .bashrc) otherwise
+the gnome apps won't see them.  i.e. if emacs is launched from icon rather
+than terminal... It won't see a DINKUM_USER_EMAIL created in .bashrc

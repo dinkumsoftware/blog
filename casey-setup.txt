@@ -12,7 +12,7 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016-11-03 tc@DinkumSoftware.com clean up typos
                                  reformat *.debs for cut/paste
 2016.11.10 tc@DinkumSoftware.com Diddle function key behavior in bios
-                                 Added bashrc section
+                                 Added profile section
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -64,7 +64,10 @@ Unity Tweak Tool =============================
 	    autoraise: on
 	    focus mode: sloppy
 
-bashrc ======================================
+profile ======================================
+        note: these are in .profile rather than .bashrc so they
+        will be seen by applications launched from gnome icon
+        rather than a terminal
 Add DINKUM_USER_EMAIL=tc@DinkumSoftware.com for use by emacs
 
 Default DNS Domain ==========================
