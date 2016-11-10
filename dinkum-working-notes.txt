@@ -497,6 +497,60 @@ x   tell debbie about the switch, url: meganet.net/cape-email-conversion for ins
 	Less than or equal to meganet charges
     set up imap server on bert
 
+2016-11-09
+Setting up emacs in git and casey/toms-pc
+
+In svn:
+    backups/tilde_tc/_DINKUM_DOT__.tc-toolbox
+	             _DINKUM_DOT_.emacs
+To git (dinkum):
+   emacs
+     README.txt
+     bin/dinkum-install-tc-emacs
+     tc-init.emacs
+     tc-lisp/*.el
+
+Deployed (by dinkum-install-tc-emacs)
+   ~/.emacs.d/init.el    (load "~/.emacs.d/tc-init.emacs")
+   ~/.emacs.d/tc-init.emacs
+   ~/.emacs.d/tc-lisp/*.el
+
+
+To cleanup:
+    svn-root-active/backups/tilde_tc ==>
+    svn-root-yesterdays-news/to-git/backups/tilde_tc
+
+2016-11-10
+Debugging emacs customizations.
+Support name and directory changes
+bug fix.  previous-window wasn't working.  Had to rename it to
+tc-previous-window to avoid name collision with internal emacs function.
+
+Function keys didn't work in emacs. emacs wasn't seeing F<n>.
+Turns out on dell xps, F<n> does some system specific function.
+If one holds down the Fn key while pressing F<n>, emacs sees it.
+One can change the default behavior to make F<n> passed thru to
+application the default and holding down the Fn key invokes the
+hardware function. To alter:
+
+    reboot and pound on F12
+    Post Behavior
+        FN Lock    CHECK    ; Fn+Esc toggles primary/secondary use of F<n>
+
+        Lock Mode Disable/Standard        ; F<n> does media stuff
+                                          ; Fn F<n> passed thru to application
+        Lock Mode Disable/Secondard CHECK ; F<n> passed thru to application
+                                          ; Fn F<n> required for media
+
+date-stamp.el
+    switched back to yyyy-mm-dd
+
+Currently the user signature is hardwired into date-and-sign.el
+Not a good solution. How about:
+
+    environment variable: DINKUM_USER_EMAIL
+    if it doesn't exist, use 
+        environment variable: USER
 
 
 

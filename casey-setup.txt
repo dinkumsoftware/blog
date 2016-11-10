@@ -11,6 +11,8 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016-10-27 tc@DinkumSoftware.com apt-get install encfs
 2016-11-03 tc@DinkumSoftware.com clean up typos
                                  reformat *.debs for cut/paste
+2016.11.10 tc@DinkumSoftware.com Diddle function key behavior in bios
+                                 Added bashrc section
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -62,6 +64,9 @@ Unity Tweak Tool =============================
 	    autoraise: on
 	    focus mode: sloppy
 
+bashrc ======================================
+Add DINKUM_USER_EMAIL=tc@DinkumSoftware.com for use by emacs
+
 Default DNS Domain ==========================
     Add to /etc/network/interfaces
         dns-search DinkumSoftware.com
@@ -97,4 +102,27 @@ sudo chmod 600                             /root/.ssh/authorized_keys
 sudo edit /etc/ssh/sshd_config
     PasswordAuthentication no	# uncomment and edit yes=>no
 sudo service ssh restart
+
+Diddle function key behavior in bios ===================================
+
+Function keys didn't work in emacs. emacs wasn't seeing F<n>.
+Turns out on dell xps, F<n> does some system specific function.
+If one holds down the Fn key while pressing F<n>, emacs sees it.
+One can change the default behavior to make F<n> passed thru to
+application the default and holding down the Fn key invokes the
+hardware function. To alter:
+
+    reboot and pound on F12
+    Bios Setup
+    Post Behavior
+        FN Lock    CHECK    ; Fn+Esc toggles primary/secondary use of F<n>
+
+        Lock Mode Disable/Standard        ; F<n> does media stuff
+                                          ; Fn F<n> passed thru to application
+        Lock Mode Disable/Secondard CHECK ; F<n> passed thru to application
+                                          ; Fn F<n> required for media
+        Apply
+        Exit
+
+
 
