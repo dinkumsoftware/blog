@@ -14,6 +14,7 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016.11.10 tc@DinkumSoftware.com Diddle function key behavior in bios
                                  Added profile section
 2016-11-16 tom@rail-pod.com Gnome Open in terminal
+2016-11-21 tom@rail-pod.com apt-get install gitk
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -24,7 +25,7 @@ Ubuntu Software Manager:
 
 sudo apt-get install \
     git emacs24 python-pip openssh-server meld wireshark zenmap \
-    subversion gimp tree unity-tweak-tool 
+    subversion gimp tree unity-tweak-tool gitk
 
 sudo apt-get install nautilus-open-terminal
 nautilus -q  

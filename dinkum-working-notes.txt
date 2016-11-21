@@ -555,3 +555,42 @@ Not a good solution. How about:
 NOTE WELL: These definitions must be in .profile (NOT .bashrc) otherwise
 the gnome apps won't see them.  i.e. if emacs is launched from icon rather
 than terminal... It won't see a DINKUM_USER_EMAIL created in .bashrc
+
+2016-11-21 tc@dinkumsoftware.com
+
+Found a nice bash script which automagically shortens the prompt when directory name is too long.
+
+https://gist.github.com/ehamberg/1197104
+
+Single bash function and alteration of PS definition.
+
+Initial implementation (copy of script under ~) so don't need
+sudo to install.
+
+deployed:
+~/.bashrc                      # Modified
+~/.dinkum/bash/dinkum-bashrc   # Copied
+               dynpath.bash    # Copied
+
+git:
+dinkum/bash/README.txt
+            dinkum-bashrc
+            dynpath.bash
+            /bin/
+               dinkum-install-bash-addons
+
+Default setting
+tom@toms-pc:~/projects/dinkum/bash$ echo $PS1
+PS1:
+\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\u@\h:\w\$
+
+
+tom@toms-pc /home/tom $ 
+PS1:
+\u@\h $(_dynpath) $
+
+It's buggy. Get unprintable chars in the prompt.
+Commit, and removed from .bashrc until one can debug it.
+
+
+
