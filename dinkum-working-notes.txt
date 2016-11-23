@@ -592,5 +592,30 @@ PS1:
 It's buggy. Get unprintable chars in the prompt.
 Commit, and removed from .bashrc until one can debug it.
 
+2016-11-22 tom@rail-pod.com
+
+Debugging dynpath.
+Explanation of what's there.
+http://askubuntu.com/questions/404341/where-can-i-find-a-complete-reference-for-the-ps1-variable
+\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\u@\h:\w\$
+    \w is current working directory
+    the first \w shows up in terminal title
+    the 2nd \w should be replaced with _dynpath.
+
+
+Still get unprintable chars when it chops the path.
+Wants to output special char: ...
+    Horizontal ellipsis
+    &#133
+    &#x85
+    octal: 205
+    &hellip
+
+Could NOT get them to print.
+don't even know what character set they are
+
+Fixed a ~ problem.
+Replaced ... with -
+code goes into infinite loop when get deep.
 
 
