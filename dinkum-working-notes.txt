@@ -595,3 +595,25 @@ PS1:
 It's buggy. Get unprintable chars in the prompt.
 Commit, and removed from .bashrc until one can debug it.
 
+2016-11-24 tc@DinkumSoftware.com
+
+Wanted to put google contacts in chrome web launch page.
+Well according to:
+    http://www.computerworld.com/article/2475118/internet/how-to-customize-google-s-new-web-app-launcher.html
+
+You have to download an app from chrome  web store:
+    app Launcher Customizer for Google
+
+    http://redirect.viglink.com/?format=go&jsonp=vglnk_148001401034511&key=f6962bb9927d153082cdc6b572121599&libId=ivwq0rze010113ap000DAbjj22pm9&loc=http%3A%2F%2Fwww.computerworld.com%2Farticle%2F2475118%2Finternet%2Fhow-to-customize-google-s-new-web-app-launcher.html&v=1&out=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fapp-launcher-customizer-f%2Fponjkmladgjfjgllmhnkhgbgocdigcjm&ref=https%3A%2F%2Fwww.google.com%2F&title=How%20to%20customize%20Google%27s%20new%20Web%20app%20launcher%20%7C%20Computerworld&txt=App%20Launcher%20Customizer%20for%20Google
+
+I installed it, but it didn't work., It says:
+    Please keep in mind the extension doesn't modify the Chrome App Launcher, only the Google App Launcher
+I deleted it.
+
+It lets you configure the apps on a GOOGLE site that has 3x3 bar on right side of page.
+which already has contacts in it.
+Could NOT find a way to configure the 3x3 Apps button in google chrome on left side of page.
+punt.
+
+
+    
