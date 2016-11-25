@@ -616,4 +616,50 @@ Could NOT find a way to configure the 3x3 Apps button in google chrome on left s
 punt.
 
 
+2016-11-25 tc@DinkumSoftware.com
+
+Tried the scanner at home:
+    homephotosmart.dinkumsoftware.com
+    10.23.0.150
+It used to work on prior orphan ubuntu 14.04
+
+sane-find-scanner
+
+It can't find the scanner.
+Some ubuntu help said run hp-setup.
+All that did was set up a printer. (I think). I cancelled out.
+
+There's a way to serve a local scanner that sane will find.
+That's not what I have, I have scanner directly on network via wifi.
+Try it anyway.
     
+etc/sane.d/net.conf is the config file.
+uncomment and lower connect_time to 15
+add 10.23.0.150 to bottom of file.
+
+As kind of expected, didn't work.
+
+Another link with same problem
+https://answers.launchpad.net/ubuntu/+question/230672
+Said to upgrade hplib and run it.
+
+I guess I should try the hplib that I have and see
+if that fixes it.  Will probably make a new printer.
+
+hp-setup
+    network/ethernet
+    Advanced Settings
+    Manual discovery
+    homephotosmart.dinkumsoftware.com
+
+    unclick Fax setup
+    Printername HomePhotosmart_C2700
+
+created a system print.
+printed a test page sucessfully printed test page from hp-setup
+
+simple scan found the scanner. ... joy joy
+
+Delete the other printer
+and rename new one  home-photosmart
+Printed from an app and it works.
