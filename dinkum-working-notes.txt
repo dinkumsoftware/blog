@@ -663,3 +663,51 @@ simple scan found the scanner. ... joy joy
 Delete the other printer
 and rename new one  home-photosmart
 Printed from an app and it works.
+
+2016-11-27 tc@DinkumSoftware.com
+
+Go back and fix up prompt shorting code.
+
+First get the infrastructure right:
+
+git:
+dinkum/
+    bash-addons/
+        README.txt
+        dinkum-bashrc
+        bin/
+            dinkum-install-bash-addons
+        dynpath/
+            README.txt
+            bin/
+                dinkum-install-dynpath
+                dinkum-dynpath.bash
+
+deployed:
+~/.bashrc                                      # Modified
+~/.dinkum/bash-addons/bin/
+                          dinkum-bashrc        #  Copied
+                     README.txt                #  Copied
+                     dynpath/
+                         README.txt            #  Copied
+                         bin/
+                             dinkum-dynpath.bash  # Copied
+
+Get the files renamed and in the right place in git.
+diverted to git/bin/git-root-dir
+
+2016-11-28 tc@DinkumSoftware.com
+
+<todo> make and install-tc to put . at head of the path.
+<todo> emacs: separate out tc versus other useful functions.
+              Maybe thin out overwritten keys
+              Maybe document what was in the key overwritten.
+
+Wrote and tested git-root-dir
+
+Wrote, tested, and commited dinkum-install-dynpath
+
+General flow of what to do next:
+    debug dynpath()
+    integrate with bash-addons
+    refactor dinkum-install-dynpath
