@@ -556,6 +556,9 @@ NOTE WELL: These definitions must be in .profile (NOT .bashrc) otherwise
 the gnome apps won't see them.  i.e. if emacs is launched from icon rather
 than terminal... It won't see a DINKUM_USER_EMAIL created in .bashrc
 
+<todo> Create the emacs readme.txt file
+<todo> migrate the emacs out of subversion
+
 2016-11-21 tc@dinkumsoftware.com
 
 Found a nice bash script which automagically shortens the prompt when directory name is too long.
@@ -618,4 +621,119 @@ Fixed a ~ problem.
 Replaced ... with -
 code goes into infinite loop when get deep.
 
+2016-11-24 tc@DinkumSoftware.com
 
+Wanted to put google contacts in chrome web launch page.
+Well according to:
+    http://www.computerworld.com/article/2475118/internet/how-to-customize-google-s-new-web-app-launcher.html
+
+You have to download an app from chrome  web store:
+    app Launcher Customizer for Google
+
+    http://redirect.viglink.com/?format=go&jsonp=vglnk_148001401034511&key=f6962bb9927d153082cdc6b572121599&libId=ivwq0rze010113ap000DAbjj22pm9&loc=http%3A%2F%2Fwww.computerworld.com%2Farticle%2F2475118%2Finternet%2Fhow-to-customize-google-s-new-web-app-launcher.html&v=1&out=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fapp-launcher-customizer-f%2Fponjkmladgjfjgllmhnkhgbgocdigcjm&ref=https%3A%2F%2Fwww.google.com%2F&title=How%20to%20customize%20Google%27s%20new%20Web%20app%20launcher%20%7C%20Computerworld&txt=App%20Launcher%20Customizer%20for%20Google
+
+I installed it, but it didn't work., It says:
+    Please keep in mind the extension doesn't modify the Chrome App Launcher, only the Google App Launcher
+I deleted it.
+
+It lets you configure the apps on a GOOGLE site that has 3x3 bar on right side of page.
+which already has contacts in it.
+Could NOT find a way to configure the 3x3 Apps button in google chrome on left side of page.
+punt.
+
+
+2016-11-25 tc@DinkumSoftware.com
+
+Tried the scanner at home:
+    homephotosmart.dinkumsoftware.com
+    10.23.0.150
+It used to work on prior orphan ubuntu 14.04
+
+sane-find-scanner
+
+It can't find the scanner.
+Some ubuntu help said run hp-setup.
+All that did was set up a printer. (I think). I cancelled out.
+
+There's a way to serve a local scanner that sane will find.
+That's not what I have, I have scanner directly on network via wifi.
+Try it anyway.
+    
+etc/sane.d/net.conf is the config file.
+uncomment and lower connect_time to 15
+add 10.23.0.150 to bottom of file.
+
+As kind of expected, didn't work.
+
+Another link with same problem
+https://answers.launchpad.net/ubuntu/+question/230672
+Said to upgrade hplib and run it.
+
+I guess I should try the hplib that I have and see
+if that fixes it.  Will probably make a new printer.
+
+hp-setup
+    network/ethernet
+    Advanced Settings
+    Manual discovery
+    homephotosmart.dinkumsoftware.com
+
+    unclick Fax setup
+    Printername HomePhotosmart_C2700
+
+created a system print.
+printed a test page sucessfully printed test page from hp-setup
+
+simple scan found the scanner. ... joy joy
+
+Delete the other printer
+and rename new one  home-photosmart
+Printed from an app and it works.
+
+2016-11-27 tc@DinkumSoftware.com
+
+Go back and fix up prompt shorting code.
+
+First get the infrastructure right:
+
+git:
+dinkum/
+    bash-addons/
+        README.txt
+        dinkum-bashrc
+        bin/
+            dinkum-install-bash-addons
+        dynpath/
+            README.txt
+            bin/
+                dinkum-install-dynpath
+                dinkum-dynpath.bash
+
+deployed:
+~/.bashrc                                      # Modified
+~/.dinkum/bash-addons/bin/
+                          dinkum-bashrc        #  Copied
+                     README.txt                #  Copied
+                     dynpath/
+                         README.txt            #  Copied
+                         bin/
+                             dinkum-dynpath.bash  # Copied
+
+Get the files renamed and in the right place in git.
+diverted to git/bin/git-root-dir
+
+2016-11-28 tc@DinkumSoftware.com
+
+<todo> make and install-tc to put . at head of the path.
+<todo> emacs: separate out tc versus other useful functions.
+              Maybe thin out overwritten keys
+              Maybe document what was in the key overwritten.
+
+Wrote and tested git-root-dir
+
+Wrote, tested, and commited dinkum-install-dynpath
+
+General flow of what to do next:
+    debug dynpath()
+    integrate with bash-addons
+    refactor dinkum-install-dynpath
