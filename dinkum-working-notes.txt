@@ -737,3 +737,7 @@ General flow of what to do next:
     debug dynpath()
     integrate with bash-addons
     refactor dinkum-install-dynpath
+
+<todo> understand 'man gitrevisions' and summarize in git-cheatsheet.
+
+

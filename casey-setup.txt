@@ -17,6 +17,7 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016-11-21 tom@rail-pod.com apt-get install gitk
 2016-11-25 tc@DinkumSoftware.com  Install dconf-editor
                                   Added HP Photoshop setup instructions
+2016-11-29 tom@rail-pod.com       bug fixes on ubuntu gui doc
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -48,9 +49,10 @@ Ubuntu Software Center: Blueman Bluetooth Manager
 
 Settings =====================================
     Appearance
+        Behavior
         Show Desktop Icon
-	Enable Workspaces
-	Show menus in window title Bar
+        	Enable Workspaces
+            Show menus in window title Bar
 
 Tweak Tool ===================================
       Typing
@@ -60,15 +62,15 @@ Tweak Tool ===================================
 Unity Tweak Tool =============================
       windows manager
         Windows snapping
-	    windows snappying:off
+            windows snappying:off
         HotCorners   
-	    Top is spread all windows 
+            Top is spread all windows 
         Additional
-	    titlebar actions
-	        double click: vertical expand
-		middle click: horizontal expand
-	    autoraise: on
-	    focus mode: sloppy
+            titlebar actions
+	            double click: vertical expand
+                middle click: horizontal expand
+                autoraise: on
+                focus mode: sloppy
 
 HP Photoshop setup ===============================
 Required to get scanner to work
