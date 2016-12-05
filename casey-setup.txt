@@ -18,6 +18,7 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016-11-25 tc@DinkumSoftware.com  Install dconf-editor
                                   Added HP Photoshop setup instructions
 2016-11-29 tom@rail-pod.com       bug fixes on ubuntu gui doc
+2016-12-05 tom@rail-pod.com       wireshark
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -27,11 +28,19 @@ Ubuntu Software Manager:
     Tweak Tool
 
 sudo apt-get install \
-    git emacs24 python-pip openssh-server meld wireshark zenmap \
+    git emacs24 python-pip openssh-server meld zenmap \
     subversion gimp tree unity-tweak-tool gitk dconf-editor
 
 sudo apt-get install nautilus-open-terminal
 nautilus -q  
+
+
+# Install wireshark and let non-root user run it
+sudo apt-get install wireshark 
+sudo dpkg-reconfigure wireshark-common
+    <yes>
+sudo adduser $USER wireshark
+# logout/login for group change to take effect
 
 
 sudo pip install
