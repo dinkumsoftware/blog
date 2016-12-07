@@ -740,4 +740,8 @@ General flow of what to do next:
 
 <todo> understand 'man gitrevisions' and summarize in git-cheatsheet.
 
+2016-12-06 tom@rail-pod.com
+
+<todo>  disappear dinkum/bash
+        rename dinkum/bash-addons ==> bash
 
