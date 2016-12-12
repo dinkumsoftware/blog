@@ -3,6 +3,17 @@ Notes on setting up an Ubuntu 14.04 server
 
 2016-05-10  Initial, FQDN
 2016-05-11 tc@DinkumSoftware.com sshd and ssh to/from localhost
+2016-12-11 tc@DinkumSoftware.com Gen a fresh keypair
+
+
+Generate a new ssh key-pair
+
+ssh-keygen -t rsa -b 4096 -C "tc@DinkumSoftware.com"
+eval "$(ssh-agent -s)"
+sshadd ~/.ssh/id_rsa
+
+
+
 
 Make FQDN (hostname -f) work ==================
 Allow ssh to localhost, no passwords ==========

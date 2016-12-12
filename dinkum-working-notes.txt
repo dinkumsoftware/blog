@@ -742,6 +742,192 @@ General flow of what to do next:
 
 2016-12-06 tom@rail-pod.com
 
-<todo>  disappear dinkum/bash
+<done>  disappear dinkum/bash
         rename dinkum/bash-addons ==> bash
+
+2016-12-09 tc@DinkumSoftware.com
+
+Debugging dynpath....
+Sort of seems to work.
+
+Was having a hardtime testing it under git, because
+code assumes ~/.dinkum/... I was running under ~projects/dinkum
+
+So I need a way to run under git, even if .dinkum is installed.
+
+Flow:
+  ~/.bashrc  : if -e .dinkum/bin/dinkum-bashrc then source it
+
+
+To test:
+DINKUM_DEBUGGING_FROM_GIT=1 bash
+
+dinkum-bashrc examines DINKUM_DEBUGGING_FROM_GIT and points things
+to gitrootdir instead of ~/.dinkum
+<todo> document this someplace.
+
+So...
+x  push ae4efbdbb996f4643b84a17d6f1e54c8e70c19ba
+x  shuffle files around
+   dinkum-install-from-git          <<< Resume here. Mostly done
+      Does dinkum-bashrc only
+  Debug dynflow under git
+  install dynflow and test under .dinkum
+
+
+2016-12-11 tc@DinkumSoftware.com
+Diversion.  Straigten out the backups.
+
+mounted on bert:
+    /mnt/1-t          ; 1 terabyte, vertical black
+    /mnt/half-t-top   ; 500G, horizontal gray, on top
+    /mnt/molly-bottom ; 500G, horizontal gray, on bottom
+                      ; her old backup, read-only
+
+Get errors:
+
+/mnt/1-t
+Dec 11 09:32:19 bert kernel: [18299982.457598] EXT4-fs warning (device sde1): __ext4_read_dirblock:901: error reading directory block (ino 34766849, block 0)
+
+Got errors on the other ones also.
+
+I suspect the usb hub.
+Unplug the hub ; plug 1-t directly into bert.
+Seems ok.
+Ran fsck on it.  Saw no errors.  Did brief read and seemed ok.
+
+put half-t-top on other usb port and fsck it.
+
+
+Bert has two usbs... so leave molly unplugged and plug in
+1-5 and half-t-top
+
+Seems ok.
+
+
+
+
+/mnt/half-t-top   ; 500G, horizontal gray, on top
+                  ; used: 117G 
+    should-be-deleted-but-cant               ; DELETED
+                                             ; had some orphan fedora7 2013 stuff
+    final-root-rsync-push                    ; DELETED
+        orphan-fedora7-2013-01-07-partial.1
+        orphan-fedora7-2013-01-07-partial.2
+        orphan-fedora7-2014-01-07
+                                             ; empty, 500G available
+
+
+/mnt/1-t          ; 1 terabyte, vertical black
+                  ; used: df: 689G  du: 641G
+
+* ===> deleteable
+
+
+lost-email-related-backups
+        orphan-with-lost-tc-email-2009-12-07
+
+manual-backups
+    * blinky
+    * henrietta
+        henrietta-final-manual-backup-2007dec16
+    * luna
+        luna-final-after-noboot-2011-10-20
+        luna-final-fc1-2008-07-23
+    molly
+
+svn-recovery *
+        svnadmin-dump-0-to-1057.dump
+
+topdir-root-rsync-push
+    bert       2015-01-05 16:18:57 newer, cpy into com/dinkumsoftware/
+    luna
+    orphan     2016-06-12 22:51:40 newr, cpy into com/dinkumsoftware/
+    com/dinkumsoftware/
+        bert   2011-10-13 19:23:34.
+        ernie  2016-05-10 17:19:05
+        nellie 2014-03-23 19:59:30  &FINAL&
+
+I suspect the two different ones are when switched to ubuntu
+doesn't report fully qualified domain name.
+In dinkum-root-rsync-push: need to change:
+   hostname ==> hostname --fqdn
+
+Run it on casey to ~tc/play
+sudo <path-to-program>/dinkum-root-rsync-pushd localhost /home/tc/play
+
+
+on casey: with 
+    /etc/ssh/sshdconfig:
+    PermitRootLogin yes
+    PasswordAuthentication yes
+
+ ssh root@localhost    # Works (because pushed the key)
+ sudo ssh localhost fails  # asks for passwd n times an dies
+                           # suspect security beyond ssh
+                           # is preventing root login's
+
+
+root had no ssh key.
+Try duplicating tc's
+*   sudo su
+    cd /root/.ssh
+    ln -s ~tc/.ssh/id_rsa
+    ln -s ~tc/.ssh/id_rsa.pub
+
+works.... but it asks for pass phrase.
+
+    sudo su
+    cd /root/.ssh
+    cp --preserve=mode ~tc/.ssh/id_rsa* .
+
+Still asks for pass phrase.
+Go back to symlinks when working, don't forgot to document in casey setup <done>
+
+   sudo su
+   eval ($ssh-agent)
+   ssh-add
+
+https://ubuntuforums.org/archive/index.php/t-845490.html
+OK, I'm now understanding what you're trying to do. Try this:
+
+1) Add "env_keep=SSH_AUTH_SOCK" to your Defaults in /etc/sudoers.
+So you would run "sudo visudo" and change your Defaults line to look something like:
+
+
+    Defaults	!lecture,tty_tickets,!fqdn,env_keep=SSH_AUTH_SOCK
+
+
+The above is based on the Defaults line from my Hardy system. Yours may look slightly different.
+
+2) Use "ssh-add" to add keys to your keyring as your normal user ID (no need for sudo at this stage).
+
+3) Execute your "sudo rsync ..." (or "sudo ssh ..." or whatever) and it should get the keys from your normal ssh-agent process and not prompt you for your passphrase.
+
+What's going on here is that SSH_AUTH_SOCK is the environment variable that tells SSH processes (or rsync running over SSH) how to communicate with the ssh-agent process and get keys. sudo normally suppresses environment variables like this when you run a command like rsync via sudo, but the env_keep setting tells sudo to propagate this variable into the environment of the process you're running.
+
+I suspect that if things were working for you on earlier releases of Ubuntu it was because the sudo program in the default package was compiled with env_reset option turned off by default. But it's most definitely turned on in my Hardy system at least:
+
+Put it etc/sudoers.d/
+    dinkum-allow-sudo-ssh
+
+That fixed it. <todo> move this file into dinkum somewhere.
+Took out the symbolic links.
+
+
+
+/mnt/1-t/topdir-root-rsync-push/com/dinkumsoftware/
+    bert      done
+    ernie     done
+    luna      punt
+    orphan    done move to final
+    casey     started.
+
+
+It was going so well.  It failed on bert because tc has
+no ssh credentials there. bert is unique because disks
+are mounted there.  Question: should I gen a new key pair
+or copy over the one from casey.
+
+Certainly safer to make a new key-pair.
 

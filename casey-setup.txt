@@ -19,6 +19,7 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
                                   Added HP Photoshop setup instructions
 2016-11-29 tom@rail-pod.com       bug fixes on ubuntu gui doc
 2016-12-05 tom@rail-pod.com       wireshark
+2016-12-11 tc@DinkumSoftware.com  Notes on ssh root login.
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -112,7 +113,7 @@ SSH no timeout ================================
 	ServerAliveInterval  120
 	ServerAliveCountMax 2160
 
-Make FQDN (hostname -f) work ==================
+ssh Make FQDN (hostname -f) work ==================
     name=$(hostname)
     edit /etc/hosts
         127.0.1.1	$name   ===>
@@ -135,6 +136,14 @@ sudo chmod 600                             /root/.ssh/authorized_keys
 sudo edit /etc/ssh/sshd_config
     PasswordAuthentication no	# uncomment and edit yes=>no
 sudo service ssh restart
+
+Put in dinkum-allow-sudo-ssh in /etc/sudoers.d
+
+All these will work:
+      sudo ssh localhost ; normally asks for passphrase, dinkum-allow-sudo-ssh fixes that
+      ssh root@localhost ; will work
+      ssh localhost
+
 
 Diddle function key behavior in bios ===================================
 
