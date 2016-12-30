@@ -455,7 +455,7 @@ checkout both the active/yesterdays-news to casey:
 tc@casey:~/projects$ svn checkout svn+ssh://eth0.bert.dinkumsoftware.com/home/tc/network-services/svn/trunk/active svn-root-active
 		     svn checkout svn+ssh://eth0.bert.dinkumsoftware.com/home/tc/network-services/svn/trunk/yesterdays-news  svn-root-yesterdays-news
 
-<todo> External disk isn't working.  It gets an error when you to write to it
+<fixed> External disk isn't working.  It gets an error when you to write to it
 
 
 <todo> Rest of orphan to xfer:
@@ -776,7 +776,7 @@ x  shuffle files around
 
 
 2016-12-11 tc@DinkumSoftware.com
-Diversion.  Straigten out the backups.
+Diversion.  Straighten out the backups.
 
 mounted on bert:
     /mnt/1-t          ; 1 terabyte, vertical black
@@ -931,3 +931,8 @@ or copy over the one from casey.
 
 Certainly safer to make a new key-pair.
 
+2016-12-29 tc@DinkumSoftware.com
+
+Got dinkum-install-from-git working (non-recursively)
+
+Now I need to get .bashrc diddled.  Need to move dynpath stuff into its one file.
