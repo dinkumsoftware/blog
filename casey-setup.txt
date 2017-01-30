@@ -20,6 +20,12 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016-11-29 tom@rail-pod.com       bug fixes on ubuntu gui doc
 2016-12-05 tom@rail-pod.com       wireshark
 2016-12-11 tc@DinkumSoftware.com  Notes on ssh root login.
+2017-01-29 tom@rail-pod.com       suggest allowing password based ssh loging
+                                  Documented keys to get command line loging from gui string
+
+
+To get a text based login from the login screen: Ctrl Alt F1
+To exit that text base login:                    Alt F7
 
 Packages Installed ===========================
 Note: baseline system snapshotted in ~/casey
@@ -133,6 +139,8 @@ cat /home/tc/.ssh/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys > /dev/nul
 sudo chmod 600                             /root/.ssh/authorized_keys
 
 # Don't allow username/passwords
+# Er.... might want to rethink this one as if you get a boot problem
+# natively, you can't get into the machine.
 sudo edit /etc/ssh/sshd_config
     PasswordAuthentication no	# uncomment and edit yes=>no
 sudo service ssh restart

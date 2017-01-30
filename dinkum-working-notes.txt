@@ -931,3 +931,79 @@ or copy over the one from casey.
 
 Certainly safer to make a new key-pair.
 
+2017-01-29 tom@rail-pod.com
+
+Life went bad.  On development machine the window spread quit working and I diddled either tweak tool or
+unity tweak tool.  Now I couldn't book ehe machine from gui interface.  Infinte loop.  Had to ssh in after
+some difficulty.
+
+Jan 29 16:23:18 casey kernel: [ 2894.784071] compiz[5683]: segfault at 7f0079656b5f ip 00007f0079656b5f sp 00007ffcb6ac5258 error 14 in icon-theme.cache[7f97119f5000+260b000]
+
+Jan 29 15:54:54 casey gnome-session[2461]: WARNING: Application 'compiz.desktop' killed by signal 11
+Jan 29 15:54:54 casey gnome-session[2461]: WARNING: App 'compiz.desktop' respawning too quickly
+Jan 29 15:54:54 casey gnome-session[2461]: CRITICAL: We failed, but the fail whale is dead. Sorry....
+
+fixes from:
+http://askubuntu.com/questions/590561/ubuntu-14-04-login-loop-problem
+1. Install and run unity reset.
+     wget https://launchpad.net/~amith/+archive/ubuntutools/+build/3910667/+files/unity-reset_0.1-8_all.deb
+     sudo apt-get install dconf-tools
+     dpkg --install unity-reset_0.1-8_all.deb
+FAILED: lots of error messages
+
+unity-tweak-tool --reset-unity
+    similar error messages.
+
+Mostly complaining about no X11 $DISPLAY.  I'm running these ssh'ed in.
+
+dbus-launch
+unity-reset
+
+compiz still crashing
+
+Got to reinstall the desktop
+sudo apt-get install --reinstall ubuntu-desktop
+FAILED
+
+rm ~/.XAuthority .ICEauthority
+FAILED
+Jan 29 16:33:05 casey kernel: [   30.807864] traps: compiz[2326] general protection ip:7fc7a87f7ecf sp:7ffc15f770c8 error:0 in libscale.so[7fc7a87db000+27000
+
+Made a new user and could log in just fine.
+
+2017-01-30 tom@rail-pod.com
+
+Rather than try to fix it, make a new user and copy over ~tc
+
+1. deluser foo (1000:1000)
+   confirm /home/foo still around
+   rm -/rf /home/foo
+
+2. 
+  adduser backdoor (same password)  1000:1000
+  sudo usermod -aG sudo username
+
+3. ssh in to backdoor
+   confirm gui boot
+   confirm sudo usage
+
+4. deluser tc 1001:1001
+
+5. mv /home/tc  /home/home-tc-before-deleting
+
+6. 
+  adduser tc (same password) should be 1001:1001
+  sudo usermod -aG sudo username
+
+7/ verify can ssh in
+   verify boots
+   mv /home/home-tc-before-deleting ~tc/home-tc-before-deleting
+
+8. mv all non .* files from home-tc-before-deleting to ~
+   For dot files mv:
+       .ssh .emacs
+
+9. go thru casey setup.  DO NOT do tweaks.
+
+
+
