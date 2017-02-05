@@ -1013,5 +1013,23 @@ Rather than try to fix it, make a new user and copy over ~tc
 9. go thru casey setup.  DO NOT do tweaks.
 
 
+NOTE: in home-tc-before-deleting found a root owned file:
+      ~/.cache/dconf
+than tc couldn't read.  It had a single entry user.
+Deleted it, but tc still wouldn't boot.
+
+<todo> delete ~backdoor/tc-before-deleting 45G
+
+New tc account seems up and running.
+Rather than reconfigure Thunderbird, just copied in the profile:
+    ~/.thunderbird
+It seemed to work.  I probably ought to take this opportunity to get
+all the mail off of nellie/orphan:
+    mail
+    address books
+Then I can finish up the retirement of nellie/orphan.
+There are various addons that should make it easier.
+
+
 
 

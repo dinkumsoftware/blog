@@ -10,7 +10,7 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016-10-27 tc@DinkumSoftware.com apt-get install gimp
 2016-10-27 tc@DinkumSoftware.com apt-get install encfs
 2016-11-03 tc@DinkumSoftware.com clean up typos
-                                 reformat *.debs for cut/paste
+                                 reformat *.debs for cut/past
 2016.11.10 tc@DinkumSoftware.com Diddle function key behavior in bios
                                  Added profile section
 2016-11-16 tom@rail-pod.com Gnome Open in terminal
@@ -22,7 +22,7 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2016-12-11 tc@DinkumSoftware.com  Notes on ssh root login.
 2017-01-29 tom@rail-pod.com       suggest allowing password based ssh loging
                                   Documented keys to get command line loging from gui string
-
+2017-01-30 tc@DinkumSoftware.com  Documented Display settings and touch pad
 
 To get a text based login from the login screen: Ctrl Alt F1
 To exit that text base login:                    Alt F7
@@ -60,7 +60,6 @@ Blue Tooth Mouse ===========================
 
 You need an "old" blue tooth mouse.
 There are two new bluetooth standards and Ubuntu 14.04 doesn't support them.
-
 Ubuntu Software Center: Blueman Bluetooth Manager
 
 Settings =====================================
@@ -69,6 +68,16 @@ Settings =====================================
         Show Desktop Icon
         	Enable Workspaces
             Show menus in window title Bar
+
+    Display
+        lcd      2560x1080(21:9) above
+        built-in 3200x1800(16:9) below
+        Used scale display to switch back and forth
+          between "right" resolution depending on whether 1 or 2 displays.
+
+    Mouse and touch pad
+        touchpad
+          off
 
 Tweak Tool ===================================
       Typing
@@ -87,6 +96,16 @@ Unity Tweak Tool =============================
                 middle click: horizontal expand
                 autoraise: on
                 focus mode: sloppy
+
+Terminal =======================================
+   Edit
+      Profile Preferences
+          General
+              Use custom defaut terminal size
+              120x24
+          Scrolling
+              unlimited
+
 
 HP Photoshop setup ===============================
 Required to get scanner to work
