@@ -488,7 +488,7 @@ x   switch my phone and tablet
 x   tell debbie about the switch, url: meganet.net/cape-email-conversion for instructions
     transfer all of orphan email to casey (thunderbird to thunderbird)
     transfer some mailing lists
-    finish up orphan empty
+x   finish up orphan empty
     transfer all of nellie email to casey (disk swap)
     switch email providers: (maybe search archived mail for others)
         2 pop boxes
@@ -1030,6 +1030,46 @@ all the mail off of nellie/orphan:
 Then I can finish up the retirement of nellie/orphan.
 There are various addons that should make it easier.
 
+2017-02-06 tc@DinkumSoftware.com
+
+Finish up the retirement of nellie/orphan:
+x   move files over
+x   move mail over
+       x mail
+       x address lists
+    move bookmarks over
+
+x   Get ernies files to bert. done.
+x   moved rsync backups to final.ernie.fedora.
 
 
+Ernie's eth0 wasn't up.... hum?  Ignore, will be upgrading to ubuntu soon.
+apt-get upgrade'd bert/luna.
 
+Bert stores everything:
+    ~tc/network-services
+        svn
+
+do-release-upgrade
+    luna, didn't want to run under ssh.
+    Do it native in the basement.
+
+
+Moved the mail with thunderbird addon:
+     ImportExportTools 
+     https://freeshell.de/~kaosmos/mboximport-en.html
+Kindof klunky but worked.
+Export: export folder with subfolders (with structure)
+Import: "import mbox file" ; with its/their subdirectory.
+        select the mbox file (NOT *.sbd directory)
+
+<done> move this dinkum/thunderbird/thunderbird-tips.txt
+       along with downloaded adds-on.
+
+       .thunderbird/pref.js
+           has *.mab info
+           don't edit manualy while running, be overwritten
+           Edit Preferences Config_Editor will let you edit it.
+
+                               
+        
