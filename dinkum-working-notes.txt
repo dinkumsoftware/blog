@@ -1071,5 +1071,91 @@ Import: "import mbox file" ; with its/their subdirectory.
            don't edit manualy while running, be overwritten
            Edit Preferences Config_Editor will let you edit it.
 
-                               
-        
+2017-02-13 tc@DinkumSoftware.com
+Not a good day. 1.5 Tbytes of two usb external disks had errors.
+Going to throw them away. In trying to revive 2T ethernet Western
+Digital external disk, Kept hitting one bug after the other.
+Made a static interface that wouldn'work using "create-static-interface".
+took me 30 minutes to figure out you have to restart network-manager
+so it knows to ignore the new device.  Fixed it in dinkum-create-static-interface.
+
+New problem is that wireshark and zenmap complain if started via sudo:
+
+tc@casey:/etc/network/interfaces.d$ sudo wireshark &
+[1] 20540
+tc@casey:/etc/network/interfaces.d$ error: XDG_RUNTIME_DIR not set in the environment.
+
+(wireshark:20541): Gtk-WARNING **: cannot open display: 
+
+Diverted to writing dinkum-emacs-use-for-sudodit.
+Turns out all I had to do was define EDITOR. Oh well.
+
+Commented out ENV_RESET in sudoers and that didn't fix it.
+This did:
+    Defaults	!env_reset
+
+Back to wd-2TB.
+Got it set to static.
+This mounts it.
+sudo mount -v -t nfs 10.23.2.100:/nfs/backups /mnt/wd-2TB/ -o nolock
+
+without the -o
+mount.nfs: Either use '-o nolock' to keep locks local, or start statd.
+
+       lock / nolock  Selects whether to use the NLM sideband protocol to lock files on the server.
+                      If neither option is specified (or if lock is specified), NLM locking is used
+                      for this mount point.  When using the nolock option,  applications  can  lock
+                      files,  but such locks provide exclusion only against other applications run‐
+                      ning on the same client.  Remote  applications  are  not  affected  by  these
+                      locks.
+rpc.statd needs to run
+    sudo update-rc.d rpcbind defaults
+    reboot
+I may have worked anyway if I rebooted.
+but works now.
+
+Put it on bert:
+sudo apt-get install rpcbind nfs-common
+
+But bert is in wrong sub-net.  Move bert to servers subnet: 10.23.2.52
+x   change bert: /etc/interfaces
+x   Change heimdall 1:1 NAT (not tested)
+    Change nameservice. <todo> after it's stable.
+x   move the plug and reboot.
+
+
+sigh....
+wd-2B mounted, but when I did a sudo cp ....
+it complained about couldn't chown.
+The nfs server is root squashing.
+I need to specify no_root_squash in /etc/exports
+on server side.  Didn't see how to do that.
+
+Looks I can ssh in and do it.... oh boy.
+
+2017-03-03 tc@DinkumSoftware.com
+
+logitech webcams quit working.
+both of them.  system sees them:
+Mar  3 11:42:18 casey kernel: [25006.430882] usb 2-1: new full-speed USB device number 14 using xhci_hcd
+Mar  3 11:42:18 casey kernel: [25006.447801] usb 2-1: New USB device found, idVendor=046d, idProduct=08dd
+Mar  3 11:42:18 casey kernel: [25006.447810] usb 2-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+Mar  3 11:42:18 casey kernel: [25006.448068] usb 2-1: ep 0x82 - rounding interval to 64 microframes, ep desc says 80 microframes
+Mar  3 11:42:18 casey kernel: [25006.448492] gspca_main: gspca_zc3xx-2.14.0 probing 046d:08dd
+Mar  3 11:42:18 casey kernel: [25006.448743] input: gspca_zc3xx as /devices/pci0000:00/0000:00:14.0/usb2/2-1/input/input43
+Mar  3 11:42:18 casey mtp-probe: checking bus 2, device 14: "/sys/devices/pci0000:00/0000:00:14.0/usb2/2-1"
+Mar  3 11:42:18 casey mtp-probe: bus: 2, device: 14 was not an MTP device
+Mar  3 11:42:18 casey rtkit-daemon[1816]: Successfully made thread 15630 of process 2323 (n/a) owned by '1001' RT at priority 5.
+Mar  3 11:42:18 casey rtkit-daemon[1816]: Supervising 4 threads of 1 processes of 1 users.
+
+model:
+08dd  QuickCam for Notebooks
+
+lsusb sees it.
+skype sees it.  Have to go to options to select camera.
+
+shows up as /dev/video1
+
+
+
+

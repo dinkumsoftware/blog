@@ -23,6 +23,8 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2017-01-29 tom@rail-pod.com       suggest allowing password based ssh loging
                                   Documented keys to get command line loging from gui string
 2017-01-30 tc@DinkumSoftware.com  Documented Display settings and touch pad
+2017-02-13 tc@DinkumSoftware.com  NFS client packages
+2017-03-09 tc@DinkumSoftware.com  python virtual environment
 
 To get a text based login from the login screen: Ctrl Alt F1
 To exit that text base login:                    Alt F7
@@ -36,7 +38,8 @@ Ubuntu Software Manager:
 
 sudo apt-get install \
     git emacs24 python-pip openssh-server meld zenmap \
-    subversion gimp tree unity-tweak-tool gitk dconf-editor
+    subversion gimp tree unity-tweak-tool gitk dconf-editor \
+    rpcbind nfs-common
 
 sudo apt-get install nautilus-open-terminal
 nautilus -q  
@@ -52,6 +55,7 @@ sudo adduser $USER wireshark
 
 sudo pip install
      virtualenv
+    virtualenvwrapper
      grip    # MarkDown renderer
     
 
@@ -192,6 +196,19 @@ hardware function. To alter:
                                           ; Fn F<n> required for media
         Apply
         Exit
+
+
+# Python debugger(s)
+# winpdb
+#    http://winpdb.org/download/
+ Download
+ Extract to ~/casey/winpdb
+ cd ~/casey/winpdb/winpdb-X.y.z./
+ sudo python setup.py install -f
+ sudo apt-get install python-wxgtk2.8
+ edit .bashrc to put ~/casey/winpdb/winpdb-1.4.8 on the path
+
+
 
 
 
