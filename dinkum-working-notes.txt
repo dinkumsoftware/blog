@@ -1,8 +1,8 @@
 dinkum-working-notes.txt
-Copyright 2014-2016 Dinkum Software
+Copyright 2014-2019 Dinkum Software
 
 A running blog-like account of DinkumSoftware's FOSS activity.
-https://github.com/dinumsoftware/dinkum-working-notes
+https://github.com/dinkumsoftware/dinkum-working-notes
 
 
 A running blog of Dinkum Software's open source development activity
@@ -1156,6 +1156,21 @@ skype sees it.  Have to go to options to select camera.
 
 shows up as /dev/video1
 
+
+2019-04-12 tc@Dinkumsoftware.com  Back to it after a while.
+
+My main laptop(casey) got sick and I replaced it with Dell XPS 13, model 9380
+running ubuntu 18.04
+
+While waiting for shipment I tried to mount a World Edition 2 terra-byte
+drive via nfs and have root read/write to it.  Quite a battle, more on this
+later.
+
+Housework.
+I collected all the setup up instructions for casey in this directory
+in:
+    configs/casey     ; old
+           /goslnold  ; new
 
 
 

@@ -1,0 +1,29 @@
+dinkumsoftware-working-notes/configs/gosnold-setup.txt
+
+This is notes used when setting up a new DELL XPS 13 (model 9380) name
+gosnold.  It's running:
+
+    Description: Ubuntu 18.04.2 LTS
+    Release:	18.04
+    Codename:	bionic
+
+A consise list of operations done is in:
+  /configs/gosnold-setup-consise.txt
+
+A TODO list in:
+  /configs/gosnold-todo.txt
+  
+
+2019-04-12 tc@DinkumSoftware.com
+
+
+<todo> Get contents from paper notes here
+
+Configured git via repo saved shell script:
+dinkum/git/bin/dinkum-git-configure-for-tc
+
+  git config --global user.email  "tc@DinkumSoftware.com"
+  git config --global user.name   "tom campbell
+  git config --global core.editor emacs"
+
+

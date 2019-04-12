@@ -1,0 +1,8 @@
+dinkumsoftware-working-notes/configs/gosnold-todo.txt
+
+This is a list of setup actions still to be done for
+DELL XPS 13 (model 9380) name gosnold, running Ubuntu 18.04.02 LTS
+
+2019-04-12 tc@DinkumSoftware.com
+
+
