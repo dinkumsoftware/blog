@@ -27,3 +27,7 @@ dinkum/git/bin/dinkum-git-configure-for-tc
   git config --global core.editor emacs"
 
 
+Recloned git repos with username so doesn't ask for it on a push.
+    git clone https://dinkumsoftware@github.com/dinkumsoftware/dinkum.git
+    git clone https://dinkumsoftware@github.com/dinkumsoftware/dinkum-working-notes.git
+
