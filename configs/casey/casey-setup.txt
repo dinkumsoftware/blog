@@ -25,6 +25,12 @@ Notes on setting up casey(a laptop) on Ubuntu 14.04
 2017-01-30 tc@DinkumSoftware.com  Documented Display settings and touch pad
 2017-02-13 tc@DinkumSoftware.com  NFS client packages
 2017-03-09 tc@DinkumSoftware.com  python virtual environment
+2019-04-13 tc@DinkumSoftware.com  After death, reinstall from CD media
+
+casey service tags(sn#)    2RNLP72
+      express service code 6025795022
+
+
 
 To get a text based login from the login screen: Ctrl Alt F1
 To exit that text base login:                    Alt F7
@@ -210,5 +216,53 @@ hardware function. To alter:
 
 
 
+2019-04-13 casey sort of died.
+Most devices didn't work (wireless, mouse, 2nd display).
+Screen resolution fixed so high one couldn't read.
+
+Backed up via dinkum-root-rsync-push on
+       bert: ~tc/network-services/backup/topdir-root-rsync-push/com/dinkumsoftware/casey
+
+NFG:
+Try to restore from DVD recovery media in paper file.
+    1. Put in DVD reader and dvd ... it is readable
+    2. reboot
+    3. bang F12 after del menu appears
+    4. Select UE?? boot/DVD RW
+    5. Select dell recovery
+
+1st try: screen went black after #4
+2nd try: switch from legacy to UE?? boot in #4
+         black screen
+    
+NFG:
+Try another approach
+https://www.dell.com/support/article/us/en/04/how12105/how-to-perform-a-factory-reset-on-a-computer-with-the-dell-oem-ubuntu-14-04-and-16-04-linux-developer-edition-installed?lang=en
+
+    1. Power On
+    2. wait for booting in insecure mode (top left)
+    3. hit escape
+    4. grub> down arrow to "restore ubuntu 14.04 to factory state", enter
+    5. select "restore linux partitions", continue 
+    
+Had hard time getting to this sequence.  Took multiple tries for ESC timing.
+Screen went black after a couple of Ubuntu screens.
+Left it for a long time.  Nothing happended.
+
+Rebooted.
+Got to black screen, but making noise.
+I'm guessing screen hardware is no good.
 
 
+Tried to bood with external monitor plugged in.....
+Got a screen, some music... but no mouse activity and random keyboard hits
+produced no action.
+
+Tried some of the above, but still didn't work.  Looks like black screens
+are a common complaint about dell xps's.
+
+<todo>
+Two more things to try before calling casey scrap:
+    1. Generate gosnold "save" disk and try it on casey.
+    2. Download generic ubuntu install disk and try that.
+    

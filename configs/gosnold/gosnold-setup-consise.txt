@@ -5,8 +5,93 @@ gosnold, running Ubuntu 18.04.02 LTS
 
 2019-04-12 tc@DinkumSoftware.com Initial
 
+*** Packages to install:
+  gnome-tweaks meld tree git subversion emacs25 iotop htop sysstat gparted
+  basero encfs
+
+*** General:
+
+connected blue tooth mouse using settings
+Made Bluetooth Mouse connection survive reboot.
+Fixed via google search:
+    Bluetooth Mouse won't reconnect after reboot ubuntu 18.04LTS
+Made mouse bigger: Settings: Universal Access: Largest
+
+Made backup recovery drivers via installed dell app:
+     backup DVD ; probably will
+     flash drive ; It probably won't work.
+
+Updated all Firmware from Ubuntu Software app
+Updated all ubuntu software via software updater.
+
+Swap capslock and ctrl with Gnome Tweaks
+
+Adjusted screen blank/lock time via "setup"
+Used tweaks to tune window behavior.
+
+Added printers
+Turn off touch pad (via settings)
+Set screen background via Settings and ~/Pictures/ocean.jpg
+Settings/Dock/Show on "all displays"
+Tweaks Windows Attach Modal Dialogs OFF
+File Manager/Preferences/Ask about executable text files.
+cd ~ ; ln -s projects/svn-root-active/encrypted/crypt-mnt-point/
+
+.bashrc:
+export PATH="$PATH:."
+export EDITOR="$(which emacs)"
+
+Added default search domain. edits /etc/NetworkManager/system-connections/dinkumsoftware
+sudo nmcli c show
+sudo nmcli c modify dinkumsoftware ipv4.dns-search dinkumsoftware.com
+sudo nmcli c down dinkumsoftware && nmcli c up dinkumsoftware
+
+
+*** Individual application setup
+
+Chrome:
+    do not sync passwords
+    casey:
+       Export passwords.  Notes shaky, but may have to do chrome:/flags
+       and enable export passwords
+    gosnold:
+      Set up sync (all but passwords)
+      chrome:/flags  ; enable Password Inport ; relaunch chrome
+      go to passwords  ; ...  ; import from file created above
 
 git:
 dinkum/git/bin/dinkum-git-configure-for-tc
+
+
+emacs:
+(from git) dinkum/emacs/bin/dinkum-install-tc-emacs
+
+Functions keys don't work.  As shipped Function keys are passed to
+Dell hardware usage.  Holding down Fn means passed to application.
+Swap that behavior in the bios.
+    reboot and pound on F2
+    Post Behavior
+         FN Lock
+         Lock Mode Disable/Standard
+         Lock Mode Disable/Secondary   CHECK   ; F<n> passed thru to app
+    Apply
+    Exit
+
+.profile:
+export DINKUM_USER_EMAIL="tc@DinkumSoftware.com"
+
+ssh:
+    # Keys
+    cp -p via flash drive casey=>gosnold
+        ~tc/.ssh/amazon-key-pair-one.pem config id_rsa idrsa.pub
+
+    /etc/ssh/ssh_config: Add
+      # prevent "Broken pipe" timeouts.
+      ServerAliveInterval  120
+      ServerAliveCountMax 2160
+
+
+thunderbird:
+    rcp -rp casey:~tc/.thunderbird gosnold/~tc
 
 

@@ -5,4 +5,30 @@ DELL XPS 13 (model 9380) name gosnold, running Ubuntu 18.04.02 LTS
 
 2019-04-12 tc@DinkumSoftware.com
 
+Put projects/dinkum-private under local git control
 
+Install python virtual envs
+
+Get dynpath working
+Get installing .bashrc working
+Get dinkum-install-tc-bashrc-profile working
+
+Chase down the "system problem" at boot up
+
+Explore using emacs default bindings instead of system.
+
+
+casey final backup off of bert.
+
+Cleanup automatically installed packages on:
+    gosnold
+
+Tried it on bert, installed ok but used bzr as on git.
+Also old package, they probably switched from bzr to git
+between 14.xx and 18.xx
+
+Removed it.
+
+Get a system wide default search domain.
+google: gnome network manager configuration
+Have to diddle network manager.

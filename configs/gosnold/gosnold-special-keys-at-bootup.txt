@@ -1,0 +1,16 @@
+gosnold-special-keys-at-bootup.txt
+2019-04-15 tc@DinkumSoftware.com
+
+This is for Dell XPS 13 (model 9380) running Ubuntu 18.04.02 LTS
+
+
+Hit F12 at boot up to get to bios screen.
+
+control-alt-F1       Back to GUI login
+control-alt-F2       End terminal loging
+control-alt-F3 to F6 Start terminal login window
+
+
+
+
+

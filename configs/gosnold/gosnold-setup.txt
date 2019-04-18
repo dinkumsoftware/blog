@@ -14,10 +14,94 @@ A TODO list in:
   /configs/gosnold-todo.txt
   
 
-2019-04-12 tc@DinkumSoftware.com
+2019-04-12 tc@DinkumSoftware.com Initial
+2019-04-15 tc@DinkumSoftware.com Transcribing paper
+
+** Following is transcribed from paper.  Original paper in
+** gosnold file
+
+2019-04-09
+Initial boot:  Asked typical startup questions.
+Livepatch ? (canonical service to update kernel without rebooting) No
+Setup screen hung. Ctrl-Alt-Del logged out tc.  Then it was OK.
+
+connected blue tooth mouse using settings/device connect
+
+updated firmware from ubuntu Software app
+
+Bluetooth Mouse connection didn't survive reboot.
+Fixed via google search:
+    Bluetooth Mouse won't reconnect after reboot ubuntu 18.04LTS
+
+Updated all Firmware from Ubuntu Software app
+Updated all ubuntu software via software updater. ~600mb
+    grub modified... I kept the one installed
+
+Adjusted bert /etc/hosts.allow to allow casey backup to bert:
+    rcp: 10.23.0.0/24
+Removed it afterward
+
+2019-04-09
+
+Swap capslock and ctrl with Gnome Tweaks
+
+To make ssh work, transfer on flash drive casey=>goslnold
+    ~tc/.ssh/amazon-key-pair-one.pem config id_rsa idrsa.pub
+
+To make ssh work for a long time without disconnecting:
+/etc/ssh/ssh_config: Add
+    # Added ServerAliveInterval and ServerAliveCountMax  to prevent "Broken
+    # pipe" timeouts. Copied from casey
+# These added to prevent long ssh sessions from timing out
+    ServerAliveInterval  120
+    ServerAliveCountMax 2160
+    
+rcp -rp casey:~tc bert:network-services/backups/casey-tilde-tc
+
+Adjusted screen blank/lock time via "setup"
+Used tweaks to tune window behavior.
+
+Set up Thunderbird
+    # DO the copy BEFORE running thunderbird.
+    # If it has already run:  rm -rf ~tc/thunderbird
+    rcp -rp casey:~tc/.thunderbird gosnold/~tc
 
 
-<todo> Get contents from paper notes here
+Chrome:
+    do not sync passwords
+    casey:
+       Export passwords.  Notes shaky, but may have to do chrome://flags
+       and enable export passwords
+    gosnold:
+      Set up sync (all but passwords)
+      chrome://flags  ; enable Password Inport ; relaunch chrome
+      go to passwords  ; ...  ; import from file created above
+
+2019-04-11
+
+Added printers
+Turn off touch pad (via settings)
+Set screen background via Settings and ~/Pictures/ocean.jpg
+
+Got emacs going.
+apt install emacs 25
+(from git) dinkum/emacs/bin/dinkum-install-tc-emacs
+
+Functions keys don't work.  As shipped Function keys are passed to
+Dell hardware usage.  Holding down Fn means passed to application.
+Swap that behavior in the bios.
+    reboot and pound on F2
+    Post Behavior
+         FN Lock
+         Lock Mode Disable/Standard
+         Lock Mode Disable/Secondary   CHECK   ; F<n> passed thru to app
+    Apply
+    Exit
+
+Made mouse bigger: Settings: Universal Access: Largest
+
+** End of paper transcription
+
 
 Configured git via repo saved shell script:
 dinkum/git/bin/dinkum-git-configure-for-tc
@@ -31,3 +115,131 @@ Recloned git repos with username so doesn't ask for it on a push.
     git clone https://dinkumsoftware@github.com/dinkumsoftware/dinkum.git
     git clone https://dinkumsoftware@github.com/dinkumsoftware/dinkum-working-notes.git
 
+Did final backup of casey:
+    casey:dinkumroot-rsync-mirror-push bert ~/tc/network-services/backups/...
+
+2019-04-13 tc@DinkumSoftware.com
+Creating a recovery flash drive, using installed dell recovery app.
+
+1st attempt failed writing to usb flash (32G VFAT) that was mounted.
+2nd try seemed to work, not sure the difference. Wrong 2nd try fails.
+
+Sigh... Dell writes shit software
+Dell Recover App make a *.iso [~tc/Downloads/ubuntu-18.04-amd64-dell_X00.iso ]
+Used Startup Disk Disk Creator to write it.
+Left *.iso file.  Wouldn't book on casey.
+
+Probably won't work on gosnold either, but i don't want to test it.
+
+Last try for casey.... virgin ubuntu disk.
+
+NFG
+Run app "create startup disk"
+Select usb flash disk; select *.iso file
+
+Try from the command line
+https://linuxize.com/post/how-to-create-a-bootable-ubuntu-18-04-usb-stick-on-linux/
+
+    insert flash
+    lsblk   ; /dev/sda sda1  /media/tc/Lexar
+    sudo umount /dev/sda1
+    sudo dd bs=4M if=/home/tc/projects/ubuntu/ubuntu-18.04.2-desktop-amd64.iso of=/dev/sda status=progress oflag=sync
+this failed on casey
+
+I checked gpg signatures on ubuntu-18.04.2-desktop-amd64.iso
+
+Try it a dvd.
+    apps search Brasero
+    burn the iso
+
+On casey:
+  Booted OK, but didn't have mouse.
+  Burn and try the gosnold recovery disk.
+  
+Burned gosnold recovery disk
+    ubuntu-18.04-amd64-dell_X00.iso
+On casey:
+   legacy: failed
+   UEFI: booted and then got black screen.
+So long casey.
+
+
+2019-04-15
+
+Fixing up .bashrc and the like.
+
+.bashrc:
+# Search the current directory
+# but do it last so system stuff takes precendence.
+export PATH="$PATH:."
+
+# Best editor in the world
+export EDITOR="$(which emacs)"
+.profile
+# NOTE: These must be here (instead of .bashrc) if they
+#       need to be read by an icon launched gnome application
+# For use by emacs date-and-sign()
+export DINKUM_USER_EMAIL="tc@DinkumSoftware.com"
+
+Get the encrypted file system to mount.
+sudo apt install encfs
+Fixed bug in mount-crypt where it complained about directories.
+
+Get toolbar on 2nd display.
+Settings/Dock/Show on "all displays"
+
+# Get my google drive mounted.
+# There is built in access in 18.04 which is where I'll start
+# Multiple choices:
+    https://linoxide.com/tools/how-use-google-drive-ubuntu-linux/
+
+
+Settings/Online Accounts/Google just sort of worked.
+I have 0 files there and about 15 Gb available for free.
+200 Gbytes is a couple of bucks/month.
+
+Some of the choices do a real file system mount of amazon.
+Might want to look at that in the future.
+
+Get some configuration control over etc
+sudo apt install etckeeper  # looks like it just worked.
+Did it on bert as well.
+
+Create /etc/NetworkManager/conf.d/global-dinkumsoftware-search-domain.conf
+
+# /etc/NetworkManager/conf.d/global-dinkumsoftware-search-domain.conf
+# append dinkumsoftware.com to all dns lookups.
+# i.e. allow "ssh gosnold" ==> ssh gosnold.dinkumsoftware.com"
+
+[global-dns]
+searches=dinkumsoftware.com
+
+That worked.
+
+2019-04-17 tc@DinkumSoftware.com
+
+Except now I can't find the file
+and it only works for ethernet
+
+I Put the file back, but it only works for ethernet, not wifi.
+It appears their is an /etc/NetworkManager/system-connections/dinkumsoftware
+    [IP4]
+    dns-search=
+
+That overwrites the /etc/NetworkManager/conf.d/ [global dns] searches=
+line.
+Examine /etc/resolv.conf to tell.
+
+Someone suggested if you modify /etc/network/interfaces to put
+dns-search in the loop back field... it would work.  It didn't.
+
+OK... found:
+https://askubuntu.com/questions/1068467/how-to-set-domain-search-on-ubuntu-18-04
+
+; Run this to edit /etc/NetworkManager/system-connections/dinkumsoftware and restart wifi
+sudo nmcli c show
+sudo nmcli c modify dinkumsoftware ipv4.dns-search dinkumsoftware.com
+sudo nmcli c down dinkumsoftware && nmcli c up dinkumsoftware
+
+The ethernet seems to just work.  Not sure why, I took out the
+/etc/NetworkManager/conf.d/global-dns-... file
