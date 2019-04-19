@@ -243,3 +243,57 @@ sudo nmcli c down dinkumsoftware && nmcli c up dinkumsoftware
 
 The ethernet seems to just work.  Not sure why, I took out the
 /etc/NetworkManager/conf.d/global-dns-... file
+
+2019-04-19 tc@DinkumSoftware.com
+The blue tooth mouse doesn't survive power on and/or suspend.  It used to.
+There were multiple threads on the net about it.
+
+It appear to connect/disconnect every couple of seconds.
+I went in with sudo bluetoothctl and paired (had to hit button on mouse)
+and connected.  It was already trusted.
+
+Similar problems discussed on switch to 18.04
+multiple suggestions.
+
+https://medium.com/@overcode/fixing-bluetooth-in-ubuntu-pop-os-18-04-d4b8dbf7ddd6
+
+dpkg --status bluez | grep '^Version:'
+Version: 5.48-0ubuntu3.1
+
+sudo add-apt-repository ppa:bluetooth/bluez
+sudo apt-get update
+sudo apt upgrade
+
+The following packages will be upgraded:
+  bluez bluez-cups bluez-obexd console-setup console-setup-linux distro-info-data im-config keyboard-configuration libbluetooth3 libnss-myhostname libnss-systemd
+  libpam-systemd libsystemd0 libudev1 python3-distupgrade python3-update-manager snapd systemd systemd-sysv ubuntu-desktop ubuntu-minimal
+  ubuntu-release-upgrader-core ubuntu-release-upgrader-gtk ubuntu-standard udev update-manager update-manager-core
+
+dpkg --status bluez | grep '^Version:'
+Version: 5.50-0ubuntu0ppa1
+
+That made it survive power on.
+That made it survive suspend.
+    systemctl suspend
+When tried systemctl hibernate
+    system got wierd and when came back, mouse wouldn't connect.
+sigh.
+power down/up. Still wouldn't connect.  Getting error messages in /var/log/syslog.
+
+Messed around deleting the mouse device and then scan/pair/trust/
+connect with bluetoothctl and that made it work.  It survived one power off/on.
+I'm under no illusions that it's fixed.  Need to carry wired mouse when
+traveling as the pad is shut off.
+
+
+2019-04-19 tc@DinkumSoftware.com
+Chasing crash at boot up.
+Coming from
+
+/var/crash/_usr_lib_gnome-session_gnome-session-check-accelerated.120.crash
+Dated Apr 11 15:48
+I think is a single crash (a SEGFAULT in gnome-session-check-accelerated)
+which gets reported over and over as one reboots.
+
+mv'ed the crash file to /root/btrsh
+

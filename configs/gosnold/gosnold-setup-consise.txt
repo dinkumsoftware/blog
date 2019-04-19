@@ -4,6 +4,7 @@ This is a consise list of changes made to DELL XPS 13 (model 9380) name
 gosnold, running Ubuntu 18.04.02 LTS
 
 2019-04-12 tc@DinkumSoftware.com Initial
+2019-04-19 tc@DinkumSoftware.com Changed bluetooth mouse instructions
 
 *** Packages to install:
   gnome-tweaks meld tree git subversion emacs25 iotop htop sysstat gparted
@@ -13,8 +14,13 @@ gosnold, running Ubuntu 18.04.02 LTS
 
 connected blue tooth mouse using settings
 Made Bluetooth Mouse connection survive reboot.
+    sudo add-apt-repository ppa:bluetooth/bluez
+    sudo apt-get update
+    sudo apt upgrade
 Fixed via google search:
     Bluetooth Mouse won't reconnect after reboot ubuntu 18.04LTS
+    use bluetoothctl to "trust the device
+
 Made mouse bigger: Settings: Universal Access: Largest
 
 Made backup recovery drivers via installed dell app:

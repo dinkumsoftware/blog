@@ -13,7 +13,7 @@ Get dynpath working
 Get installing .bashrc working
 Get dinkum-install-tc-bashrc-profile working
 
-Chase down the "system problem" at boot up
+<done>Chase down the "system problem" at boot up
 
 Explore using emacs default bindings instead of system.
 
