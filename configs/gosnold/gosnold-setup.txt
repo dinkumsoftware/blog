@@ -297,3 +297,34 @@ which gets reported over and over as one reboots.
 
 mv'ed the crash file to /root/btrsh
 
+2019-04-29 tc@DinkumSoftware.com
+Getting HP scanner to work.
+https://help.ubuntu.com/community/sane
+sudo apt-get install sane sane-utils libsane-extras xsane
+
+Neither of these find scanner:
+        xsane
+        sudo sane-find-scanner
+
+Need HP package hplip
+It's installed.
+hplip is already the newest version (3.17.10+repack0-5).
+
+Run:
+    hp-makeuri 10.23.0.150
+    ; It outputs an SANE URI.
+    ; pass that to xsane or simple-scan
+
+hpaio:/net/Photosmart_C7200_series?ip=10.23.0.150
+
+Both work, but have to pass above URL each time.
+Tried hp-setup -i , but only built printer and fax.
+sudo apt-get install python-qt4 python3-pyqt4
+Still didn't work.
+Looks like I net python qt5
+
+Looks like a fix is found here.
+https://chrisjrob.com/2016/01/02/ubuntu-simple-scan-hp-all-in-one/
+
+Punt for now.  Maybe in future, make an alias for programs I use.
+

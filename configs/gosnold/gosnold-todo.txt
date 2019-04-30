@@ -20,8 +20,8 @@ Explore using emacs default bindings instead of system.
 
 casey final backup off of bert.
 
-Cleanup automatically installed packages on:
-    gosnold
+<done>Cleanup automatically installed packages on:
+      gosnold
 
 Tried it on bert, installed ok but used bzr as on git.
 Also old package, they probably switched from bzr to git
