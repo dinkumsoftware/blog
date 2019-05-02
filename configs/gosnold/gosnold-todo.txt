@@ -1,9 +1,11 @@
 dinkumsoftware-working-notes/configs/gosnold-todo.txt
 
+2019-04-?? tc@DinkumSoftware.com Initial
+2019-04-30 tc@DinkumSoftware.com turned on gnome emacs keybindings
+
 This is a list of setup actions still to be done for
 DELL XPS 13 (model 9380) name gosnold, running Ubuntu 18.04.02 LTS
 
-2019-04-12 tc@DinkumSoftware.com
 
 Put projects/dinkum-private under local git control
 
@@ -15,7 +17,7 @@ Get dinkum-install-tc-bashrc-profile working
 
 <done>Chase down the "system problem" at boot up
 
-Explore using emacs default bindings instead of system.
+<done> Explore using emacs default bindings instead of system.
 
 
 casey final backup off of bert.

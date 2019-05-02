@@ -1170,7 +1170,240 @@ Housework.
 I collected all the setup up instructions for casey in this directory
 in:
     configs/casey     ; old
-           /goslnold  ; new
+           /gosnold  ; new
 
 
+
+2019-04-30 tc@DinkumSoftware.com
+
+Gosnold is generally configured.  setup up documented in
+    repo:dinkum-working-notes/configs/*
+
+
+Walked in casey .bashrc changes to gosnold.
+
+I'd like to target my efforts to develop a "software publishing machine".
+Collection of open source tools to make publishing good software easy and
+bad software hard.
+
+Need to access where I am so I know what to do next.
+repo:dinkum
+
+├── backups                                 ; shell script to backup whole system
+│   └── bin
+│       └── dinkum-root-rsync-push
+├── bash
+│   ├── bash-cheatsheet.txt                 ; move to doc .. <done>
+│   ├── bin
+│   │   └── dinkum-install-bash-addons      ; maybe alters ~/.bashrc
+                                            ; copies scripts to ~/.dinkum/bash/
+
+│   ├── dynpath                             ; needs to be debugged
+│   │   ├── bin
+│   │   │   ├── dinkum-dynpath.bash
+│   │   │   └── dinkum-install-dynpath
+│   │   └── README.txt
+│   └── README.txt
+├── bin
+│   ├── dinkum-are-files-identical         ; mostly shell scripts to support 
+│   ├── dinkum-bashrc                      ;      dinkum-install-from-git
+│   ├── dinkum-git-root-dir
+│   ├── dinkum-install-from-git            ; highest level install program
+│   ├── dinkum-install-helper-cp-files
+│   ├── dinkum-install-helper-cp-std-files
+│   └── dinkum-is-git-file
+├── can-utils                              ; documentation for can-utils
+│   ├── bin                                
+│   │   ├── dinkum-can-utils-generate-doc  ; shell sripts (require can-utils installed)
+│   │   └── dinkum-can-utils-list-programs
+│   └── doc
+│       ├── can-utils-program-documentation.txt      ; Output from above programs
+│       ├── can-utils-programs
+│       └── can-utils-programs-with-no-runtime-help
+├── emacs
+│   ├── bin
+│   │   ├── dinkum-emacs-use-for-sudoedit   ; configures sudoedit to use emacs
+│   │   └── dinkum-install-tc-emacs         ; locally install tc's emacs cusomization not generic
+│   ├── emacs-cheatsheet.txt                ; move to doc
+│   ├── tc-init.emacs                       ; emacs run code               not generic
+│   └── tc-lisp                             ; ditto                        not generic
+│       ├── date-and-sign.el
+│       ├── date-stamp.el
+│       ├── save-all-buffers.el
+│       ├── scroll-one.el
+│       ├── tc-diddle-background-color.emacs
+│       └── tc-key-mappings.emacs
+├── git
+│   ├── bin
+│   │   ├── dinkum-git-configure-for-tc                          ; does getconfig's, not generic
+│   │   ├── dinkum-git-root-dir -> ../../bin/dinkum-git-root-dir
+│   │   └── dinkum-is-git-file -> ../../bin/dinkum-is-git-file
+│   ├── git-cheatsheet.txt
+│   └── README.txt
+├── LICENSE
+├── network-utils                              # tools to manipulate local network
+│   ├── bin
+│   │   └── dinkum-create-static-interface
+│   └── busted
+│       └── tell-NetworkManager-to-not-use-a-device
+├── NOTICE
+├── project                                    # Future
+│   └── recipe-528877-1.py                     # Good template for python executable
+├── README.md                      # High level doc
+├── sudoko                                     # Mostly working python solver
+│   └── bin
+│       └── sudoko.py
+├── thunderbird
+│   └── thunderbird-tips.txt                   # move to doc?
+├── utils                                      # shell scripts  <done> sort out sym links
+│   └── bin
+│       ├── dinkum-are-files-identical -> ../../bin/dinkum-are-files-identical
+│       └── dinkum-find-newest-file-in
+└── winpdb                                     # program to allow winpdb to run under python 3
+    ├── bin                                    # requires winpdb installed.
+    │   └── winpdb3
+    └── python3-reqd-patches
+        ├── rpdb2.py.original
+        ├── rpdb2.py.patched
+        ├── sha1.rpdb2.py.original
+        └── sha1.rpdb2.py.patched
+
+Ok... here's the short term plan.
+
+1. Convert dinkum-install-from-git to python
+    Don't go too far down the rabbit hole,
+    Do steps manually in lieu of refactoring or writing a program
+
+2. Get dinkum-uninstall to work
+
+3. Get tc-install.py to work.
+$  Get tc-remove.py to work
+
+Where do I put source and the like.
+All the python library source will be in:
+    dinkum/python/dinkum/a/b/*.py    # In package library code
+           python/bin/dinkum-*.py    # Is executable
+
+    dinkum/bin ; sym links.e.g.
+          dinkum-* ==> ../python/bin/dinkum-*.py
+
+So fix up the repo.
+    Move documentation to doc  <done>
+    Mark DINKUM_NOT_TO_PUBLISH <done>
+    
+<todo> Figure out what to do with dinkum/bin/*
+
+dinkum-install-from-git
+    #    Confirm we are under git control
+    #    Create ~/.dinkum and copy over ../bin/* ../README.* 
+    #    Copy doc/* to doc|Doc/dinkum-doc
+    #    diddle ~/.bashrc to source ~/.dinkum/bin/dinkum-bashrc
+
+<todo> dinkum-install-bash-addons ????? obsolete?
+
+<todo> write git condition checker.
+       CONVENTIONS enforcement
+           sym links exist
+       All req'd files README etc exist
+
+python: Switched template for optparse to argparse
+
+<done> look at docopt.  Nice package. Takes a usage line (doc string)
+       and generates args[] and options in one function call.
+       Only down side is it is NOT in the standard library.
+       Start using it later.
+
+<done> Figure out whether to just copy the damn git ?
+<done> Why not allow to just run from git?  That's just really
+       for me or anyone else that has git.
+
+2019-05-01 tc@DinkumSoftware.com
+      dinkum-install-from-git        copies everything to publish from git.
+      dinkum-uninstall-from-git      
+
+      dinkum-config-to-run-from-git    Just points things to git.
+      dinkum-unconfig-to-run-from-git
+
+      tc-install                        Dinkum stuff + specials
+      tc-remove
+
+
+dinkum-install-from-git
+    #    Confirm we are under git control
+    #    Create ~/.dinkum and copy over ../bin/* ../README.* 
+    #    Copy doc/* to doc|Doc/dinkum-doc
+    #    diddle ~/.bashrc to source ~/.dinkum/bin/dinkum-bashrc
+
+<moved> put version # in docstring via format() so don't have
+enter it twice.  Verify docstring still works.
+
+<moved> retrieve these from git      
+dinkum-git-root-dir -> ../../bin/dinkum-git-root-dir
+dinkum-is-git-file -> ../../bin/dinkum-is-git-file
+
+dist_utils.copy_tree() seems buggy.
+     it is copying <x>/dinkum/git/bin/foo  to .dinkum/git-copy-root/bin
+     Also doesn't work if destination exists.
+     They have a create_tree() which will precreate the directories,
+     seems like a kludge.
+
+I started with shutil.copytree()
+  but didn't like it because of odd destination directory requirements.
+  
+Go back to that.
+It doesn't have verbosity switch. 
+x  commit to local git
+x  get it to work
+   sort out verbosity/dry-run from cmd line?
+   If it is too messy, wrap it with dinkum.utils.file_utils.tree_copy
+   Diddle bashrc profile?
+   see todo's above.
+
+2019-05-02 tc@DinkumSoftware.com
+
+works, but has to start with clean slate.
+Need to remove git-copy-root recursively
+
+<punt> add remove-git switch
+
+Probably write dinkum-uninstall-from-git
+  which main() calls dinkum.package.install.uninstall_from_git
+
+So convert existing code to dinkum.package.install.install_from_git() ... done
+
+mv dinkum-install-from-git.py from python/bin to python/dinkum/package/bin/dinkum-install-from-git.py
+and diddle symbolic link in dinkum/bin.. done
+
+<moved> ~/dinkum/python/dinkum/FOO ==> ~/dinkum/FOO
+
+code remove_install_from_git
+exe  dinkum-remove-install-from-git
+
+On to --verbose and --dry-run
+   booleans
+   if verbose announces what doing
+   if dry-run never copy files (forces verbose=T)
+
+<done> do files then dirs
+
+Next: make a cleanup pass on the code.
+
+Figure out PYTHONPATH early in the game and
+    refactor some support code? how find it.
+
+<todo> ~/dinkum/python/dinkum/FOO ==> ~/dinkum/FOO
+
+<todo> put version # in docstring via format() so don't have
+       enter it twice.  Verify docstring still works.
+
+<todo> retrieve these from git      
+       dinkum-git-root-dir -> ../../bin/dinkum-git-root-dir
+       dinkum-is-git-file -> ../../bin/dinkum-is-git-file
+
+
+<todo> f'string? to avoid entering defs twice in docstrings
+<todo> history out of docstring
+
+Then write: dinkum-remove-install-from-git
+Then on to bashrc/profile
 
