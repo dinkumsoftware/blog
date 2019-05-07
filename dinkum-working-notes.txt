@@ -1018,7 +1018,7 @@ NOTE: in home-tc-before-deleting found a root owned file:
 than tc couldn't read.  It had a single entry user.
 Deleted it, but tc still wouldn't boot.
 
-<todo> delete ~backdoor/tc-before-deleting 45G
+<punt> delete ~backdoor/tc-before-deleting 45G
 
 New tc account seems up and running.
 Rather than reconfigure Thunderbird, just copied in the profile:
@@ -1291,7 +1291,7 @@ So fix up the repo.
     Move documentation to doc  <done>
     Mark DINKUM_NOT_TO_PUBLISH <done>
     
-<todo> Figure out what to do with dinkum/bin/*
+<done> Figure out what to do with dinkum/bin/*
 
 dinkum-install-from-git
     #    Confirm we are under git control
@@ -1354,8 +1354,8 @@ Go back to that.
 It doesn't have verbosity switch. 
 x  commit to local git
 x  get it to work
-   sort out verbosity/dry-run from cmd line?
-   If it is too messy, wrap it with dinkum.utils.file_utils.tree_copy
+x  sort out verbosity/dry-run from cmd line?
+no If it is too messy, wrap it with dinkum.utils.file_utils.tree_copy
    Diddle bashrc profile?
    see todo's above.
 
@@ -1391,19 +1391,82 @@ Next: make a cleanup pass on the code.
 Figure out PYTHONPATH early in the game and
     refactor some support code? how find it.
 
-<todo> ~/dinkum/python/dinkum/FOO ==> ~/dinkum/FOO
+<done> ~/dinkum/python/dinkum/FOO ==> ~/dinkum/FOO
 
-<todo> put version # in docstring via format() so don't have
+<done> put version # in docstring via format() so don't have
        enter it twice.  Verify docstring still works.
 
-<todo> retrieve these from git      
+<punt> retrieve these from git   they were in utils/bin
        dinkum-git-root-dir -> ../../bin/dinkum-git-root-dir
        dinkum-is-git-file -> ../../bin/dinkum-is-git-file
 
 
-<todo> f'string? to avoid entering defs twice in docstrings
-<todo> history out of docstring
+<fail> f'string? to avoid entering defs twice in docstrings
+<done> history out of docstring
 
 Then write: dinkum-remove-install-from-git
 Then on to bashrc/profile
 
+
+2019-05-03 tc@DinkumSoftware.com
+
+pydoc looks nice.
+<done> Remove manual table of contents and replace it
+       with words to effect of run pydoc
+<todo> pydoc -g needs package python-tk
+
+It looks like there is no way even in python III to insert stuff in a docstring.
+Only suggestion was modify __doc__ at run time.
+
+That seems to work for pydoc.
+
+<todo> tc@DinkumSoftware.com => dinkumsoftware.com/tc
+       Set the server up.
+       
+       
+2019-05-05 tc@DinkumSoftware.com
+
+<done> don't install *.~ and *.pyc files
+won't help with recursive dir copies.
+
+Refactored in-line code into find_dinkum_git_root_dir()
+Named exceptions and cleaned up exception printout.
+
+I still have dinkum_git_root_dir() in dinkum-install-from-git.py
+because it has to run before PYTHONPATH is set up.
+
+I could make it special and put a symbolic link dinkum/bin where
+it could be found by default.
+
+
+
+2019-05-06 tc@DinkumSoftware.com
+
+<done> dinkum-install-from-git announce if replacing if previously installed.
+
+<todo> write dinkum-uninstall-from-git
+
+<todo> consider different naming tc- ? for exes for me only.
+
+Altered dinkum-install-from-git to only copy tracked git files.
+Ran into a mess with shutil.copytree.  Couldn't support dry run.
+
+Got to write my own.... sigh.
+Follow their model on ignoring file.
+
+Put code in dinkum.file.utils.copy.py
+
+<todo> rename dinkum-install-from-git ==> dinkum-install-from-local-git
+       check remove naming is consistent.
+2019-05-07 tc@DinkumSoftware.com
+
+<done> refactor mkdir into file.utils.py
+<done> add symlinks arg to my copy tree
+
+<todo> write dinkum-etags:
+       cd $DINKUM
+       etags $(find . -name '*'.py | grep -v TEMPLATES)
+
+
+<todo> Print a line at the end of dinkum-install-from-git that the git can be removed.
+       Print a line on how to remove it.
