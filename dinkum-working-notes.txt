@@ -1299,9 +1299,9 @@ dinkum-install-from-git
     #    Copy doc/* to doc|Doc/dinkum-doc
     #    diddle ~/.bashrc to source ~/.dinkum/bin/dinkum-bashrc
 
-<todo> dinkum-install-bash-addons ????? obsolete?
+<moved> dinkum-install-bash-addons ????? obsolete?
 
-<todo> write git condition checker.
+<moved> write git condition checker.
        CONVENTIONS enforcement
            sym links exist
        All req'd files README etc exist
@@ -1413,14 +1413,14 @@ Then on to bashrc/profile
 pydoc looks nice.
 <done> Remove manual table of contents and replace it
        with words to effect of run pydoc
-<todo> pydoc -g needs package python-tk
+<done> pydoc -g needs package python-tk
 
 It looks like there is no way even in python III to insert stuff in a docstring.
 Only suggestion was modify __doc__ at run time.
 
 That seems to work for pydoc.
 
-<todo> tc@DinkumSoftware.com => dinkumsoftware.com/tc
+<moved> tc@DinkumSoftware.com => dinkumsoftware.com/tc
        Set the server up.
        
        
@@ -1444,9 +1444,9 @@ it could be found by default.
 
 <done> dinkum-install-from-git announce if replacing if previously installed.
 
-<todo> write dinkum-uninstall-from-git
+<moved> write dinkum-uninstall-from-git
 
-<todo> consider different naming tc- ? for exes for me only.
+<moved> consider different naming tc- ? for exes for me only.
 
 Altered dinkum-install-from-git to only copy tracked git files.
 Ran into a mess with shutil.copytree.  Couldn't support dry run.
@@ -1456,17 +1456,67 @@ Follow their model on ignoring file.
 
 Put code in dinkum.file.utils.copy.py
 
-<todo> rename dinkum-install-from-git ==> dinkum-install-from-local-git
+<moved> rename dinkum-install-from-git ==> dinkum-install-from-local-git
        check remove naming is consistent.
 2019-05-07 tc@DinkumSoftware.com
 
 <done> refactor mkdir into file.utils.py
 <done> add symlinks arg to my copy tree
 
+2019-05-08 tc@DinkumSoftware.com
+Collected todo's
+
+<todo> rename dinkum-install-from-git ==> dinkum-install-from-local-git
+       check remove naming is consistent.
+<todo> Print a line at the end of dinkum-install-from-git that the git can be removed.
+       Print a line on how to remove it.
+<todo> write dinkum-uninstall-from-git
 <todo> write dinkum-etags:
        cd $DINKUM
        etags $(find . -name '*'.py | grep -v TEMPLATES)
+<todo> consider different naming tc- ? for exes for me only.
+<todo> tc@DinkumSoftware.com => dinkumsoftware.com/tc
+       Set the server up.
+<todo> pydoc -g needs package python-tk
+<todo> write git condition checker.
+       CONVENTIONS enforcement
+           sym links exist
+       All req'd files README etc exist
+<todo> dinkum-install-bash-addons ????? obsolete?
 
 
-<todo> Print a line at the end of dinkum-install-from-git that the git can be removed.
-       Print a line on how to remove it.
+2019-05-14 tc@DinkumSoftware.com
+
+scanner wasn't recognized
+prior work (search upward in this file) said
+run hp-setup.  Won't run under ubuntu 18.04:
+
+hp-setup
+    HP Linux Imaging and Printing System (ver. 3.17.10)
+    Printer/Fax Setup Utility ver. 9.0
+    <snip>
+    error: No module named 'PyQt5'
+
+Ran without the gui:
+    hp-setup -i 10.23.0.150  # IP# of hp printer
+
+It created printer.  It created fax.
+Test print from hp-setup worked.
+
+simple scan found the printer and scanning worked.
+
+Survived restart.  Still sees the scanner.
+Need to delete fax and one of the printers (I now have two).
+I would think I want to delete the oldest one in case the scanner
+is somehow related to the printer. [next time, delete the printer first]
+
+Couldn't really tell which was oldest printer.  Guessed and:
+   Via system menu(not cups) I removed one printer and fax.
+   couldn't figure out how to give root passwd to cups.
+
+
+
+
+
+
+  
