@@ -1514,9 +1514,385 @@ Couldn't really tell which was oldest printer.  Guessed and:
    Via system menu(not cups) I removed one printer and fax.
    couldn't figure out how to give root passwd to cups.
 
+2019-11-07 tc@DinkumSoftware.com
+6 months later... back to writing code
+Revisiting kata sudoku_solver.
+
+Hit and fixed some emacs problems.  I was always annoyed and troubled
+by emacs shells not reading .bashrc.  This prevented PYTHONPATH from
+getting passed to shells.  This fixes it in:
+
+    ;; get emacs shells to use bash and read ~/.bashrc
+    ;; Thanks to
+    ;; https://stackoverflow.com/questions/12224909/is-there-a-way-to-get-my-emacs-to-recognize-my-bash-aliases-and-custom-functions/12229404#12229404
+    (setq shell-file-name "bash")
+    (setq shell-command-switch "-ic")
+
+Now of course ^X^E (compile) doesn't read .bashrc
+Only fix I found was:
+    ^X^E bash -ic dinkum/whatever/foo.py
+
+2019-11-08 tc@DinkumSoftware.com
+Only workaround I found for compile in emacs is:
+(compile) bash -ic <command>
 
 
+2019-11-13 tc
+
+Using sudoku python code to firm up my python development environment.
+
+Explored git tools a bit:
+    git-standup    command line tool to show synopis of last days
+                   git work.  Seemed to just work.  Time frame
+                   is programable.  Packaged for ubuntu
+
+    GUIs:
+        gitg        Lots of information displayed.  I've used it in
+                    the past and it works. Packaged for ubuntu
+        git-cola    Seemed intuitive in 5 minutes usage.  Includes
+                    git-dag. Packaged for ubuntu
+        git-dag     git history viewer. Packaged for ubuntu
+
+    debuggers:
+    See https://wiki.python.org/moin/PythonDebuggingTools
+        pud         command line debugger. 
+                    Packaged for ubuntu
+
+        pudb        "gui" using a terminal.  I found it non-intuitive in
+                    10 minutes usage.  Probably works just fine.
+                    Packaged for ubuntu
+
+<punt.winpdb failed> get winpdb to work https://pypi.org/project/winpdb-reborn/
+<done> publish this in dinkum/git/doc/git-tools.txt
+       remove prior work in git-cheatsheet.txt
 
 
+<later><todo> sort out emacs tags
 
-  
+2019-11-14 tc
+Try new winpdb that supposedly works.
+https://pypi.org/project/winpdb-reborn/
+
+sudo apt remove winpdb
+sudo python -m pip install winpdb-reborn
+     /usr/bin/python: No module named pip
+
+2019-11-15 tc
+
+Looks like there is an apt packaged pip (python2) AND pip3
+    python-pip  python-pip3
+
+Ubuntu 18.04 has both python 2 and 3 installed.  python 2 is
+the default because they don't want to break a lot of python 2 code.
+You can invoke python 3 via python3 pip3 --or-- use sudo update-alternatives
+to switch globally.  My programs call for python3 in the initial #! line.
+My code uses python3.
+
+Many pip installation guides call for using a python virtual environment.
+    venv       https://docs.python.org/3/library/venv.html
+    virtualenv https://packaging.python.org/key_projects/#virtualenv
+
+venv is from python.  A strong argument for it.
+
+https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-programming-environment-on-ubuntu-18-04-quickstart
+    sudo apt install -y python3-venv
+-y isn't documented, but suspected in means always say yes.... a dangerous thing with sudo
+
+go for it:
+   sudo apt install python3-venv
+
+It did NOT apt install pip3, but appears may have it in virtual environment
+
+Where do I want to create venv directory.  venv docs suggest ~/.venv
+Do I want it in ~/.dinkum/.venv ?    no, no need to make it hidden
+                                     humans aren't poking around .dinkum very much
+Do I want it in ~/.dinkum/venv  ?    yes
+
+   python3 -m venv $HOME/.dinkum/venv
+   
+
+<todo> there is some upper level tool that sits on top of venv and does more
+       check it out.
+
+source $HOME/.dinkum/venv ==>
+    (venv) tc@gosnold:~/.dinkum/venv$
+
+That would argue for making venv variable: dinkum-venv or dinkum.  Only downside is
+it chews up screen width.  Let's go with dinkum-venv
+
+   deactivate
+   rm -rf $HOME/.dinkum/venv
+   python3 -m venv $HOME/.dinkum/dinkum-venv
+
+source $HOME/.dinkum/dinkum-venv/bin/activate ==>
+    (dinkum-venv) tc@gosnold:~/.dinkum/venv$
+
+Seems to work.
+(dinkum-venv) tc@gosnold:~$ python --version
+Python 3.6.8
+(dinkum-venv) tc@gosnold:~$ pip --version
+pip 9.0.1 from /home/tc/.dinkum/dinkum-venv/lib/python3.6/site-packages (python 3.6)
+
+My python with #!/usr/bin/env python3 seems to work.
+
+Diddle my .bashrc:
+export PATH="$PATH:$HOME/.dinkum/dinkum-venv/bin"
+source activate
+
+
+<todo> require virtual environment?
+       https://docs.python-guide.org/dev/pip-virtualenv/
+
+Back to installing a debugger (which is where this started)
+
+https://pypi.org/project/winpdb-reborn/ says:
+    python -m pip install winpdb-reborn
+
+Inside a (dinku-venv)
+but don't I want pip3 ? just try it
+    sudo python -m pip install winpdb-reborn
+pfailed:
+    /usr/bin/python: No module named pip
+try sudo python -m pip install winpdb-reborn
+
+a ha!  but sudo forks a shell that isn't in a virtual environment.
+I've got a pip from tc shell, but not root shell.
+My is picked up from dinkum-venv/bin which remained on the path
+after a deactivate.
+
+The bug was I set dinkum-venv/bin on the path.  Don't want to do that,
+merely activate the virtual environment.
+
+Now I don't see pip, which is good as it matches root.
+Now I want apt install pip and pip3
+
+tc@gosnold:~$ apt list | grep ^python-pip
+python-pip/bionic-updates,bionic-updates 9.0.1-2.3~ubuntu1.18.04.1 all
+python-pip-whl/bionic-updates,bionic-updates,now 9.0.1-2.3~ubuntu1.18.04.1 all [installed,automatic]
+
+    sudo apt install python-pip python3-pip
+
+A very, very big install.
+
+Ok, back to debugger.....
+    sudo python -m pip install winpdb-reborn
+
+The directory '/home/tc/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/home/tc/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+
+Collecting winpdb-reborn
+  Downloading https://files.pythonhosted.org/packages/37/4a/57d0d62b67625f4fb568313ca8e79a82d2bc05f58cb7782c334960c04422/winpdb_reborn-1.5.0-py2-none-any.whl (142kB)
+    100% |████████████████████████████████| 143kB 2.2MB/s 
+Installing collected packages: winpdb-reborn
+Successfully installed winpdb-reborn-1.5.0
+
+should be :  sudo -H python -m pip install winpdb-reborn
+
+It generally worked in both dinkum-venv and bash.  Didn't quite get it to
+what I wanted to, but that was operator unfamiarity... and that's misspelled.
+
+2019-11-16 tc
+winpdb: I can set breakpoints, but locals don't show up.
+I wonder if it's python 2 vs 3 problem.
+When I tried to test that, got problems launching it.
+When I switched the source code #! line from python3 => python2... still no locals.
+
+See https://github.com/bluebird75/winpdb/issues/15
+Seems to imply winpdb itself only runs under python 2, but the
+underly rpdb2.py does.  hum
+
+For test, move my code to python 2 and see if it works.
+Try this mostly "perfect" back conversion tool.
+https://pypi.org/project/3to2/
+
+note: venv seems to only work python3
+
+virtualenv does both.
+
+But I did a simple test case and don't see local variables
+under python2 [a shell NOT a dinkum-venv]
+
+2019-11-17 tc
+
+Sigh.. I've lost track off how deep the stack is pushed.
+
+It appears venv only supports python 3.  virtualenv which I have used
+before probably supports python 2.  On ubuntu if I work in a non-virtual
+shell, python2 is the default... but pip installs probably require root and/or
+mess with system libraries.  So if I want a python2 virtual environment, I
+have to install virtualenv.  That's not a big deal, I've done it in the past.
+I might want a fresh install of winpdb in python 2 environment and/or
+maybe put it back from ubuntu apt package.  There is also some patches
+in dinkum/winpdb, but I think I tried them.
+
+There is a "namespace not working" in winpdb-reborn. Mimics my symptons,
+but no answers.  Pointed to old original winpdb bug:
+    https://sourceforge.net/p/winpdb/discussion/485189/thread/2689b421/
+
+winpdb --debug foo.py
+
+produces a similar set of errors about global name 'sets' is not defined.
+sets was deprecated since version 2.6.  I'm running version 2.7.  Hence
+the difficulty. Comes from rpdb2.py
+
+I haven't got python 2.6 on my system and doesn't look to be available as
+a package from ubuntu.
+
+Someone may have written a replacement package.
+https://github.com/enthought/Python-2.7.3/blob/master/Lib/sets.py
+
+Couple of choices:
+    fix rpdb2.py
+    splice in a sets to set layer
+    run under python 2.6 in virtual environment
+    Go back and look at ubuntu winpdb with patches.
+    used a different debugger:
+        pydebug
+        pydev    It is featured as a 'Python IDE' plugin for Eclipse
+
+Let's try other debuggers.  Deinstall winpdb
+      
+    (dinkum-venv) tc@gosnold:~/play$ pip -V
+    pip 9.0.1 from /home/tc/.dinkum/dinkum-venv/lib/python3.6/site-packages (python 3.6)
+
+    tc@gosnold:~/play$ pip -V
+    pip 9.0.1 from /usr/lib/python2.7/dist-packages (python 2.7)
+
+hum... both dinkum-venv & raw shell have winpdb => /usr/local/bin/winpdb
+I apparently installed winpdb-reborn in raw shell.
+
+    tc@gosnold:~/play$ sudo pip --verbose uninstall winpdb-reborn
+Seemed to work.  Only two python files:
+
+Look at other debuggers.
+<done> purge winpdb & patches from dinkum
+
+pydebug: link points to just source code in wayback machine, some archival facility of web pages.
+         not promising.
+
+pydev     It is only an eclipse plug-in.  Means have to install eclipse (which I need to do anyway
+          for app development [i think]).  
+
+
+OK, further down the rabbit hole.  Install eclipse and pydev.
+Do all the work in a raw python 2.7 shell.  diddle bash.rc to NOT activate dinkum-venv
+
+eclipse:
+    ubuntu gui lists: eclipse no version from 2019-03 from snapcrafters
+                      eclipse 3.8.1-11 
+                                            
+    google pages show:
+        use snap installer
+        use eclipse oxygen installer
+        download from eclipse
+
+    eclipse says use their downloader
+
+Current eclipse is:
+    2019-09
+    3.8.1-11 June 5, 2012
+
+I don't really care how old it is.  I can upgrade later if req'd.
+    sudo apt install eclipse
+    87 new packages
+
+2019-11-18 tc
+eclipse install went ok.
+
+
+sigh... well, maybe not....started it:
+An error has occurred.  See the log file
+/home/tc/.eclipse/org.eclipse.platform_3.8_155965261/configuration/1574085740489.log
+
+!SESSION Mon Nov 18 09:02:20 EST 2019 ------------------------------------------
+!ENTRY org.eclipse.equinox.launcher 4 0 2019-11-18 09:02:20.510
+!MESSAGE Exception launching the Eclipse Platform:
+!STACK
+java.lang.ClassNotFoundException: org.eclipse.core.runtime.adaptor.EclipseStarter
+	at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:471)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:588)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:521)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:626)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:584)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1438)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1414)
+
+google says:
+https://stackoverflow.com/questions/50423322/eclipse-ubuntu-18-04-installation-java-lang-classnotfoundexception
+
+Just went through same issue with Ubuntu 18.04. Don't know specific answer but reinstalling directly from eclipse.org (C/C++ installer) eclipse-cpp-oxygen-3a-linux-gtk-x86_64.tar.gz went well. No more issues. Installing at Ubuntu 16.04, no issues found with synaptic installation either. So, just use eclipse installer in newest Ubuntu.
+    
+https://stackoverflow.com/questions/3412617/java-lang-classnotfoundexception-org-eclipse-core-runtime-adaptor-eclipsestarte
+various talk about editting the eclipse config file.
+
+let's try install directly from eclipse
+      2004  sudo apt remove eclipse
+      2005  sudo apt autoremove
+
+eclipse.org/downloads
+download tools/eclipse/eclipse-inst-linux64.tar.gz
+Couldn't find instructions on eclipse.org
+
+Found: https://www.eclipse.org/downloads/packages/installer
+       download eclipse-inst-linux64.tar.gz
+       unzip it to eclipse-installer
+       help available at: file://localhost/home/tc/tools/eclipse/eclipse-installer/readme/readme_eclipse.html
+
+       tc@gosnold:~/tools/eclipse/eclipse-installer$ ./eclipse-inst 
+       Eclipse Installer:
+       The Eclipse Installer executable launcher no longer supports running with GTK + 2.x. Continuing using GTK+ 3.x.
+       Installed in ~/eclipse
+         eclipse ide for java developers
+       Seemed to run, but hello world project didn't match instructions... just punted.
+
+       Couldn't add eclipse icon to tool bar.  Fix via:
+       https://askubuntu.com/questions/1082340/how-to-add-eclipse-to-favorites
+       Created ~/.local/share/applications/.desktop
+       worked!
+
+       .bashrc: Added $HOME/tc/eclipse/java-2019-09/eclipse
+       
+Tried git on eclipse and it seemed to get stuck... later
+pydev seemed to install ok.
+tomorrow, configure interpreter and take it for a spin.
+
+2019-11-19 tc
+
+Configured pydev for python 3.6.  See http://www.pydev.org/manual_101_interpreter.html
+started trying to create code at http://www.pydev.org/manual_101_first_module.html
+delete pydev-first-time-project
+
+Finally got pydev running with debugger.
+It is running directly from ~/projects/dinkum/....
+
+Found at least one bug in replace_substr_at().  Move it to it's own module and run test code.
+
+eclipse: Turn on auto-refresh <done> put this in eclipse install-notes.txt or somewhere
+         windows=>preferences check both "refresh on access" and "refresh using native hooks or polling"
+         <eclipse> put all step/run keys into checksheet
+         <done> checksheet .gitignore .project .pydevproject
+
+
+emacs: wanted alt-x [global]-display-linenumbers-mode.  Only available in ver 26+, running 25.2.2
+       From https://www.emacswiki.org/emacs/LineNumbers
+       For older emacs: M-x linum-mode
+       <done> put this in emacs-cheatsheet
+
+<todo> put all step/run keys into eclipse-cheatsheet.txt
+
+<done> Clean up:
+       git-tools.txt
+       git-cheatsheet.txt
+
+2019-11-22 tc
+
+Cleaned up the documentation clean up.
+
+Back to sudoku
+Added block separator lines to sudoku
+Trying to add cell numbers and got wierd
+results trying to debug it in eclipse.
+break points didn't show up on executable code.
+some local variables were missing.  sigh.
+did an interium commit.
+
