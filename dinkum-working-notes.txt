@@ -1878,7 +1878,7 @@ emacs: wanted alt-x [global]-display-linenumbers-mode.  Only available in ver 26
        For older emacs: M-x linum-mode
        <done> put this in emacs-cheatsheet
 
-<todo> put all step/run keys into eclipse-cheatsheet.txt
+<done> put all step/run keys into eclipse-cheatsheet.txt
 
 <done> Clean up:
        git-tools.txt
@@ -1895,4 +1895,159 @@ results trying to debug it in eclipse.
 break points didn't show up on executable code.
 some local variables were missing.  sigh.
 did an interium commit.
+       
+2019-11-23 tc
+
+The answer to above.  You have to terminate and
+relaunch the debug session, even from changes
+with eclipse.
+
+<todo> bug, emacs ^R overides debug "run to line" ^R
+       see if can remap "run to line" to say ESC-r or Alt-R
+       or unused function key
+
+Got blocks and cells labelled.
+
+The worksheet is actually done.  But here's some stuff
+to do next:
+<done>
+x   revisit label positions
+x   refactor into sudoku.pretty_print.PrintLabeledBoard
+x   put in test code for blank board
+x   put in values as 2x2    11
+                            11 note: decided on just single value
+x move the cell numbers to left 1 space, overwriting the separater.
+x label block on top and bottom
+
+2019-11-24 tc
+
+Debugging Board constructor.
+<done> move content into board.py, rcb.py, and cell.py
+<moved> add row/blk/blk to Cell
+<moved> test all_neighbors.  remove iteration.  Build sets and remove self.
+<moved> move all sample boards to dinkum.sudoku.sample_boards.py with answers.
+
+2019-11-25 tc
+
+Finally... sudoku.py Unit tests pass.
+couple of stupid bugs.
+
+commit sudoku.py and get labeled_printer to work.
+
+diddled format a bit and got all test to run.
+
+Put the examples in labeled_printer and I think we are done with it.   Later.
+
+Moving Block/RCB/Cell into their own files.  Ran into nested import
+woes as Cell references Board, mostly for constants.  Should move
+those definitions into the package import __init__.py
+Query: Should those variables be all upper case ?
+       A brief google scan and PEP 8 didn't provide any answers.
+       I think I'll follow that convention.... but tomorrow.
+do cell and work way "up" to Board.
+
+All unit tests pass.  Run down todo's in the code
+from cell ... sudoku  Don't forget the ones above.
+
+2019-11-26 tc
+
+Rethought the plan:
+
+<done> move all sample boards to dinkum.sudoku.sample_boards.py with answers.
+<done> added sample_board.currently_solvable_boards boards with solutions and
+       we know we can solve.
+<done> add board name
+<done> rename sudoku.py => kata.py, 
+<moved> write dinkum-sudoku-solve <know-board-name> do timings printout here
+<moved> introduce timings
+
+<done> add row/blk/blk to Cell
+<done> remove iteration.  Build sets and remove self. test all_neighbors?  
+<done> add board[row][col] returning a cell
+
+<moved> add rcb iterator
+       revisit all neighbors
+       and block constructor.
+
+To run all the unit tests
+python3 -m unittest discover -v -p '*'.py
+<done> put in cheatsheet and/or
+<todo> write bash script ?
+
+
+From the top of sudoku.py
+###################
+# <done>Change RCB.rcb to RCB.cells
+# <moved>Add rcb_type as RCB member and constructor
+# <done> Test pre-solved
+# <moved> print out nonsolvabe puzzles
+# <moved> print out timings
+# <punt> Have some set indicate there are cells with single possible values
+###################
+
+2019-11-28 tc
+
+Wierdness.  board.py test code passes from command line, shell under emacs,
+testrunner with named file. e.g.
+
+These run:
+(dinkum-venv) tc@gosnold:~/projects/dinkum/sudoku$ python -m board
+(dinkum-venv) tc@gosnold:~/projects/dinkum/sudoku$ ./board.py
+(dinkum-venv) tc@gosnold:~/projects/dinkum/sudoku$ python3 -m unittest board.py
+python3 -m unittest discover  -v --failfast -p  board.py
+
+YET THIS FAILS:
+(dinkum-venv) tc@gosnold:~/projects/dinkum/sudoku$ python3 -m unittest discover  --failfast -p  '*'.py
+..................E
+======================================================================
+ERROR: test_solving_boards (dinkum.sudoku.board.Test_board)
+test a bunch of sample boards
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/tc/projects/dinkum/sudoku/board.py", line 380, in test_solving_boards
+for sp in all_solved_puzzles :
+NameError: name 'all_solved_puzzles' is not defined
+----------------------------------------------------------------------
+Ran 19 tests in 0.039s
+FAILED (errors=1)
+
+eh?
+
+maybe python2 sneaking in?
+
+2019-11-30 tc
+commit what I have to "interium sudoku: at test runner discovery bug"
+
+Turned out to be a cyclic import problem.  Not quite sure how it showed
+up differently in discover but direct... but that fixed it.
+
+Added a board description.  Commit interium sudoku.  Introduced board description.  All unit tests pass.
+Back to todo list.
+
+https://www.codewars.com/kata/hard-sudoku-solver-1
+Rename sudoku.py to kata.py
+
+Knocked off a bunch of todo's
+
+<done> add rcb iterator
+<done> revisit all neighbors and block constructor.
+
+<done>Add rcb_type as RCB member and constructor
+
+
+<done> write dinkum-sudoku-solve <know-board-name> do timings printout here
+         print out nonsolvabe puzzles
+         print out timings
+
+<todo> introduce timings
+
+2019-12-01 tc
+Plowing thru the todo list.
+Done all but bin/dinkum_sudoku_solve.py
+git commit
+
+On to dinkum_sudoku_solve_known [puzzle_name]
+
+<todo> fixup usage/help/docstring in dinkum_sudoku_solve_known
+
 
