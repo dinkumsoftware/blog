@@ -1972,7 +1972,7 @@ Rethought the plan:
 To run all the unit tests
 python3 -m unittest discover -v -p '*'.py
 <done> put in cheatsheet and/or
-<todo> write bash script ?
+<done> write bash script ?
 
 
 From the top of sudoku.py
@@ -2039,7 +2039,7 @@ Knocked off a bunch of todo's
          print out nonsolvabe puzzles
          print out timings
 
-<todo> introduce timings
+<done> introduce timings
 
 2019-12-01 tc
 Plowing thru the todo list.
@@ -2048,6 +2048,682 @@ git commit
 
 On to dinkum_sudoku_solve_known [puzzle_name]
 
-<todo> fixup usage/help/docstring in dinkum_sudoku_solve_known
+<done> fixup usage/help/docstring in dinkum_sudoku_solve_known
+
+2019-12-02 tc
+
+<done> change example in labeled_printer.py
+
+puzzle won't solve, nothing obvious.
+Put in some globe puzzles.  I'm tired of silly lists.
+Let Board constructor take a string of numbers.
+
+2019-12-03 tc
+
+Allowed string input as well as [] of row[] as input to Board constructor.
+Put in a globe mon and sat puzzle.  mon was solved, sat not
+
+2019-12-04 tc
+
+Based on globe sat. Next solution technique:
+
+Each rcb keeps {} of possible_unsolved_cells_by_value.
+   Indexed by possible_value (1-9) 
+
+   value is set of unsolved cells in the rcb that have
+   possible_value in it's possible_values   
+
+If a possible_unsolved_cells_by_value[X] has only one
+member, that cell can be set.
+
+<done> introduce timing and print it out in dinkum_sudoku_solve_known printout
+
+<done> Document (or store) solve times in .dinkum/sudoku/known_puzzle_solve_times
+
+       add dinkum_sudoku_solve_known printout -u, --update_times to write it
+       store as yaml or pickle?
+
+<done> changes rcbs to touple
+
+<done> add possible_unsolved_cells_by_value
+       add rcb.remove_from_possibles(cell) ==> rcb.cell_was_set()
+       
+
+<punt> move cell.set.neighbor iteration to rcb.remove_from_possibles(cell)
+        make rcb.remove_from_possibles(cell) return [] of cells to set
+
+<done> add board.solve_rcbs_with_single_possible_value_solution
 
 
+pre_solved          :   Solved! after  0.861 usecs
+real_easy           :   Solved! after  0.615 usecs
+globe_mon_2019_12_02:   Solved! after  0.382 usecs
+empty               : UNSOLVED! after  9.948 usecs
+globe_sat_2019_11_02: UNSOLVED! after 25.563 usecs
+kato_puzzle         : UNSOLVED! after 22.064 usecs
+
+Looked at pickle, only problem is it stores as binary.
+
+Tried to save the solve times in yaml.  Probably the
+right format, but requires pip install ... not now
+
+Looked at JSON, but it can't encode a Board.
+
+So pickle it is
+
+Figure out state structure.
+Initially thinking ~/.dinkum/package/package/package/module/filename
+                             dinkum
+
+Maybe better  ~/.dinkum/something/package/package/package/module/filename
+                                  dinkum
+nah.... 
+
+Structure on gosnold is ~/projects/dinkum/sudoku/whatever.py
+state should be         ~/.dinkum/dinkum/sudoku/whatever/<filename>
+
+Got diverted with writing test code for __init__.py and where to put it.
+<done> conventions python test code at end of source.  __init__.py
+       test code at end of __init__.py works fine.
+
+<done> migrate code in dinkum/__init__.py to dinkum.utils.state_space.py
+
+2019-12-05 tc
+
+Turns out you can put the unit test code at the end of an __init__.py
+and everything seems to work out fine.
+
+Well now that I tought out the state_space design.... turns out sudoku
+isn't gonna use it.  It should store the pickled timing data in
+.../dinkum/sudoku/test_data/ so it is under git control and shows
+up during an install.
+
+Go ahead an finish the state_space implementation.
+
+2019-12-06 tc
+
+After a hard day+ of coding I finished the state_space implementation.
+
+Back to pickling sudoku timing data.... but tomorrow.
+All the sudoku code passes
+
+The state of git
+	modified:   PTAGS
+	modified:   __init__.py
+	modified:   python/doc/python-cheatsheet.txt
+	modified:   sudoku/bin/dinkum_sudoku_solve_known.py
+	modified:   sudoku/board.py
+	modified:   sudoku/labeled_printer.py
+	modified:   sudoku/test_data/test_puzzles.py
+
+
+2019-12-07 tc
+
+Back to sudoku.  I finished the timing work.
+The solve times are so fast < 1usec and so jittery.  I had
+to average them like 10K times to get even moderate meaning
+in the timing results.  committed all.
+
+
+Not sure this algorithm makes sense.
+save code in ~/btrsh/saved-sudoku.py
+
+2019-12-08 tc
+
+Algoritm does make sense:
+    each rgb has:
+      unsolved_value_possibles.
+          {} of sets of cells
+          key: cell value
+          value: set of cells in rgb that have value as a possibility
+
+      RCB.cell_was_set(cell) removes cell from all unsolved_value_possibles
+
+      Board.solve_rcbs_with_single_possible_value_solution() looks
+      for any RCB whose unsolved_value_possibles[X] only has 1 cell
+      and sets it
+
+<moved> rename dinkum_print_sudoku_worksheet.py ==> dinkum_sudoku_print_worksheet
+<moved> make it use cell.str_value()
+
+
+Implemented Board.solve_rcbs_with_single_possible_value_solution()
+It solved a whooping 3 additional cells in globe_sat_2019_11_02
+sigh.....
+
+git commit -m "Sudoku interium Implemented Board.solve_rcbs_with_single_possible_value_solution()"
+
+Next, look at unsolved and see how I do.
+
+2019-12-09 tc
+
+<moved> I need to implement: reduce_possibles_from_matching_cells()
+
+It searches every rcb for pairs (and triples, quads) of unsolved cells
+that all have the same possible value that is unique to that rcb,
+i.e. no other cell in the rcb has that value as a possible.
+
+Then remove that value from possibles of any other rcb's they have in
+common.
+
+<done> But first, add some statistics:
+<done>     number of passes
+<punt>     number of unsolved cells
+<later>    who set the cells.
+
+<done> Store these in a pickled file along
+with the timing.
+x   create class SudokuStats and moving timing there
+x   rename the pickle file and read/write routines
+x    change dinkum_sudoku_solve_known to:
+x         print SudoKuStats on unsolved
+<punt> suppress the timings and multiple runs
+             unless --timings is present.
+             It is so jittery, it is not of much use.
+x       Change improvement to change and flip signs
+
+<punt> speed up Board(board) constructor.  Now running about 2ms
+
+2019-12-10 tc
+
+The board construction time isn't that bad.  It was the solution of
+all the known puzzles in import of test_puzzles.  Moved that to
+test code.
+
+Change board constructor to use prior board name in the copy constructor.
+
+Cleaned up the dinkum_sudoku_solve_known printout.
+
+<moved> make Stats.str() iterate thru vars() rather than hard coding member names.
+Back to actually trying to solve the puzzle.
+
+I need to implement: 
+It searches every rcb for pairs (and triples, quads) of unsolved cells
+that all have the same possible value that is unique to that rcb,
+i.e. no other cell in the rcb has that value as a possible.
+
+Then remove that value from possibles of any other rcb's they have in
+common.
+
+Have it implemented.  It's crashing with
+  File "/home/tc/projects/dinkum/sudoku/cell.py", line 121, in set
+    assert value in self.possible_values
+
+Add -n, --num_to_average to dinkum_sudoku_solve_known to reduce the clutter.
+
+<done> look at kludge in RCB.remove_value_from_possibles() that don't
+       remove if it's the only one.  Should set it or tell someone to set it.
+
+<done> when bug is fixed, grep all the code for #### as some printouts will
+       go away when bug is fixed.
+
+2019-12-11 tc
+
+<moved> validity check --num_to_average
+
+<moved> move write up below to sudoku/__init__.py
+       Give a broad overview in {board, rcb, cell}.py doc strings
+
+OK.  Did more damage than good last night.  Was too tired, but
+think I have the solution:
+
+Cell has:
+    set(value)        returns Set of CellsToSet's
+      set itself: value, possibles=Set()
+      returns Board.a_cell_was_set(self)
+
+    remove_from_possibles(value) returns Set of CellsToSet's
+      It's ok if value not in possibles, return Set()
+      removes value from self.possibles
+      if removal would result in only one possible value
+         returns Set( CellsToSet(self, value)
+      else return Set()
+
+    is_solved()
+    __str__()
+    detailed_str()
+    sanity_check(?)
+
+
+RCB has:
+    a_cell_was_set(cell) returns Set(CellsToSet)
+        removes cell from unsolved_cells
+        removes cell from unsolved_value_possibles
+            if removal would result in only one possible
+            cell for that value... that cell is added to
+            returned Set(CellsToSet)
+
+        remove_from_possibles(cell.value)
+            adding to Set(CellsToSet)
+
+        return Set(CellsToSet)
+
+    remove_from_possibles(value)
+        iterates thru unsolved_cells
+             Cell.remove_from_possibles(cell.value)
+             accumulates set(CellsToSet)
+
+        Rebuilds unsolved_value_possibles
+
+        If there remains only a single Cell that can provide
+        a value, that Cell and the value to set it to is
+        added to the returned set of CellToSet's
+
+        
+    is_solved()
+    __str__()
+    detailed_str()
+    sanity_check()
+ 
+
+
+Board has:
+    a_cell_was_set(cell)        returns Set(CellsToSet)
+        removes cell from unsolved_cells
+        iterates thru rcbs:
+            RCB.a_cell_was_set(cell)
+            accumulates CellsToSet for return
+
+    set_cells( Set(Set of CellsToSet's) return # set?
+      Cell.set() those cells
+      accumulate CellsToSet 
+      recurse on any CellsToSet until nothing to set
+
+      is_solved()
+      __str__()
+      detailed_str()
+      sanity_check()
+
+    solve()
+        while (not self.is_solved()) :
+            solve_cells_with_single_possible_value()
+            solve_rcbs_with_single_possible_value_solution()
+            solve_by_reducing_possibles_from_matching_cells()
+      
+            Fail if none of the above set a cell
+    
+    # All of these True if they set any cells
+    # ??? instead return the # of cells set ???
+    # They internally produce a Set(CellsToSet)
+    # They Board.set_cells() those cells
+    solve_cells_with_single_possible_value()
+        produce initial Set by finding all cells
+        with only one possible value
+    solve_rcbs_with_single_possible_value_solution()
+       produce initial Set by finding any RCB that an
+       unsolved value that can only be provided a
+       single cell
+    solve_by_reducing_possibles_from_matching_cells()
+       produce initial Set by searching all RCBs
+       for pairs(and triples, quads) of Cells
+       that share a possible that is unique to
+       those cells, i.e. can't be supplied by
+       any other cell in the RCB.
+
+       For any of those pairs/triple/quads that
+       are in the same rcb, call RCB.remove_from_possibles
+       accumulating CellsToSet
+
+       call Board.set_cells() with those CellsToSet
+
+OK.. this looks reasonable.
+Implentation order:
+    1. Get code to pass unit tests and solve_known
+       with solve_by_reducing_possibles_from_matching_cells()
+       commented out
+x         a. snapshot sudoku/ ~/btrsh/sudoku-busted-2019-12-11
+x         b. get all the debug output removed
+x         c. comment out solve_by_reducing_possibles_from_matching_cells()
+x         d. unit tests/solve should work
+
+x   2. git commit "prior to final solution HA!"
+
+    3. implement Cell changes.  stub non-existent {Board,RCB}
+x      Make it handle board==NULL so
+NO      Unit test all functions.  "need more funcs"
+NO     solve_known works          "need more funcs"
+x      git commit "Cell implemented"
+
+    4. implement RCB changes.
+       Unit test all functions.  
+       solve_known works
+       git commit "RCB implemented"
+
+    5. implement Board changes.
+       Unit test all functions.  
+       solve_known works
+       git commit "Board implemented"
+
+    6. Switch 2 existing solve_XXX() that work to new scheme
+       All unit tests pass.  solve_known works
+       git commit "initial integration"
+
+    7. Turn on solve_by_reducing_possibles_from_matching_cells()
+       See where we go.
+
+--------------------------------
+Removing debuging code:
+	modified:   bin/dinkum_sudoku_solve_known.py
+                all changes are keepers for --num_to_average
+                commit "implemented num_to_average"
+	modified:   board.py
+	modified:   cell.py
+	modified:   rcb.py
+    removed the debugging out to above
+    all unit tests pass and dinkum_...solve_known runs
+    --update the times
+    
+    
+All the Cell work is done and passes unit tests.
+Other unit tests:
+AttributeError: 'Board' object has no attribute 'a_cell_was_set'
+
+2019-12-12 tc
+
+Slight change of plans.  All the unit tests and solve don't
+work.  Need additional functions.
+
+git commit "Cell implemented"
+
+On to rcb....
+RCB has:
+x    a_cell_was_set(cell) returns Set(CellsToSet)
+x        removes cell from unsolved_cells
+x        removes cell from other unsolved_value_possibles
+x            if removal would result in only one possible
+x            cell for that value... cell is added to
+x            returned Set(CellsToSet)
+x        remove_from_possibles(cell.value)
+x            adding to Set(CellsToSet)
+x
+x        return Set(CellsToSet)
+
+    remove_from_possibles(value)
+        iterates thru unsolved_cells
+             Cell.remove_from_possibles(cell.value)
+             accumulates set(CellsToSet)
+
+        Rebuilds unsolved_value_possibles
+
+        If there remains only a single Cell that can provide
+        a value, that Cell and the value to set it to is
+        added to the returned set of CellToSet's
+
+        return set of CellsToSet's
+
+
+<moved> unsolved_cells_with_common_unique_values(self, match_size)
+       make return {} keyed by value.
+<done> rcb.py prune unused funcs
+
+<done> rcb.unsolved_value_possibles.  Currently treating solved entris as empty sets.
+       Be faster to delete them.
+       In any event, clean up rcb.detailed_str() to only print non-empty sets.
+       which if fix prior, should just work.
+
+2019-12-13 tc
+
+<moved> to many words named set.  set() ==> solve() everywhere (doc to)
+<done> RCB.__str__() ==> [1 2 3 .. ]
+
+rcb unit tests are failing on CellToSet() equals test, as test only for same object instead
+of cell values.  Making CellToSet a subclass of tuple should fix it.  That was
+indeed it, but had to jump thru hoops to inherit from tuple.  Had to implement
+a __new__() which forces call of __init__()
+
+The {} rcb.unsolved_value_possibles has an empty set for unsolved values.
+Instead it should only have entires (as it is a dictionary) for unsolved values
+It started out as list.
+
+before I do this commit cell and rcb.
+    "prior to taking empty sets from rcb.unsolved_value_possibles.
+    unit_tests:cell passes, rcb: print fails"
+
+<done> rcb.sanity_check()  len(unsolved_values) == len(unsolved_cells)
+                           unsolved+solved == all_cell_values
+                           unsolved+solved == all cells in rcb
+
+<done>
+x   implement and unit test
+x             solved_values
+x             unsolved_values
+x             solved_cells()
+punt, too hard to do   update sanity_check and add to unit tests
+
+git commit "solved/unsolved cells/values"
+
+x   remove_from_possibles check for no possibility for value
+x   remove_from_possibles add except_cells as reqd arg
+x   remove_from_possibles unit test
+
+2019-12-14 tc
+
+Finally, rcb.py passes unit tests.  I removed the complicated test because was
+too hard set up the RCB in right state.  Depend on test_a_cell_was_set.
+
+commit "rcb/cell passes unit tests"
+
+Consolidate the todo's
+When stable:
+    <todo> to many words named set.  set() ==> solve() everywhere (doc to)
+    <todo> validity check --num_to_average
+    <todo> dinkum_sudoku_solve_known .. print one-lines in real-time if not verbose
+    <todo> move write up below to sudoku/__init__.py
+           Give a broad overview in {board, rcb, cell}.py doc strings
+    <todo> maybe? make Stats.str() iterate thru vars() rather than hard coding member names.
+    <todo> rename dinkum_print_sudoku_worksheet.py ==> dinkum_sudoku_print_worksheet
+                make it use cell.str_value()
+
+<todo> unsolved_cells_with_common_unique_values(self, match_size)
+       make return {} keyed by value.
+
+On to betting block.py to pass unit tests
+and then finally back to solving puzzles
+
+Make the changes in board.py.  All it's unit tests pass.
+Get a unit test failurel test_puzzles trying to solve a board.
+commit "board passes unit tests
+
+All the unit tests pass (joy)
+Solvabiltiy remains the same as before.
+Timings/pass changed:
+
+(dinkum-venv) tc@gosnold:~/projects/dinkum/sudoku$ bin/dinkum_sudoku_solve_known.py
+pre_solved           solved      11.9 usecs(-20.5%) 1 passes(0)  
+real_easy            solved      30.5 usecs(-29.0%) 1 passes(0)  
+globe_mon_2019_12_02 solved     547.4 usecs(-19.5%) 5 passes(2)  
+empty                UNSOLVED!   32.4 usecs(  4.8%) 1 passes(0)  
+globe_sat_2019_11_02 UNSOLVED!   28.4 usecs(-77.8%) 1 passes(-1) 
+kato_puzzle          UNSOLVED!   28.3 usecs(-64.0%) 1 passes(-1) 
+
+updated it
+
+Interesting... the # of passes for the monday globe vary from 4 to 5.
+Must the the order that sets() return stuff varies.
+
+git commit "all unit tests pass.  Some solvabity as before"
+
+Ok.  Now:
+x   implement Board.solve_cells( set(CellToSet)
+
+x   unit test it
+
+x   convert solve_rcbs_with_single_possible_value_solution(self)
+   to use Cell.solve_cells()
+
+x   same for solve_cells_with_single_possible_value
+
+   commit
+
+   fix up solve_rcbs_with_single_possible_value_solution(self)
+
+2019-12-16 tc
+
+Board.solve_cells() done
+
+convert to use Board.solve_cells():
+        solve_rcbs_with_single_possible_value_solution(self)
+        solve_cells_with_single_possible_value
+
+commit
+
+Still doesn't solve globe saturday.
+Found anonomly in cells 0,1 should
+be a pair of 7's in block 0 and not
+
+Increase rcb.detailed_str() to show cell possibles
+
+blk#0:
+   Cell#s:    0  1  2  9 10 11 18 19 20
+   Indexs:    0  1  2  3  4  5  6  7  8
+   Values:    _  _  1  9  _  _  _  _  _
+   Possibles:
+              3  3        3  3  3  3  3        
+              4  4  
+              6  6        6  6
+   Cell index possibles for unsolved values:
+      2:  0 1 4 5 6 7 8
+      3:  0 1 4 5 6 7 8
+      4:  0 1 4 5 6 7 8
+      5:  0 1 4 5 6 7 8
+      6:  0 1 4 5 6 7 8
+      7:  0 1 4 5 6 7 8
+      8:  0 1 4 5 6 7 8
+
+Done.
+
+Now the saturday globe has bad board state
+in row 0.
+
+partial solution:
+ 0 0 1  6 0 3  0 0 0
+ 9 0 0  0 4 7  0 1 0
+ 0 0 0  0 0 0  7 0 0
+
+ 3 9 0  0 2 5  6 0 0
+ 0 0 0  0 0 0  0 0 0
+ 0 0 4  3 6 0  0 5 9
+
+ 0 0 3  0 0 0  0 0 0
+ 0 4 0  1 7 0  0 0 6
+ 0 0 0  2 0 6  5 0 0
+
+row#0:
+      Cell#s:  0  1  2  3  4  5  6  7  8
+      Indexs:  0  1  2  3  4  5  6  7  8
+      Values:  _  _  1  6  _  3  _  _  _
+   Possibles:
+               2  2              2  2  2
+               4                 4  4  4
+               5  5        5           5
+               7  7                     
+               8  8        8     8  8  8
+                           9     9  9   
+   Cell index possibles for unsolved values:
+      2:  0 1 4 6 7 8
+      4:  0 1 4 6 7 8
+      5:  0 1 4 6 7 8
+      7:  0 1 4 6 7 8
+      8:  0 1 4 6 7 8
+      9:  0 1 4 6 7 8
+
+The 7's in row1/blk1 and row1/blk2 should
+wiple out all the 7s in row 1,2.
+The cell.possibles reflect this.
+the rcb unsolved_values doesn't
+
+The various Cell.set(7) should:
+    sets value, empties possible_values
+
+    call board.a_cell_was_set()
+
+board.a_cell_was_set(cell)
+    removes cell from unsolved
+    iterate thru solved_cell.rcbs calling
+            rcb.a_cell_was_set
+
+
+rcb.a_cell_was_set(cell)
+    removes cell from unsolved_cells
+            del unsolved_value_possibles[set_cell.value]
+            iterates thru unsolved_value_possibles removing set_cell
+
+
+is that the call order of rcb for set_cell
+   row.a_cell_was_set()
+   col.a_cell_was_set()
+   blk.a_cell_was_set()
+
+If the blk eliminates a possible value in row...
+It's too late because row.a_cell_was_set calculated unsolved_value_possibles
+before other cells in the row possibles were changed.
+
+One fix:
+    rcb.a_cell_was_set sets unsolved_value_possibles to None
+        and does NOT rebuild it
+
+    board.a_cell_was_set()
+        iterates thru rcb's call
+            rcb.rebuild_unsolved_value_possibles
+
+this is not a great solution.
+copy partial work to ~/btrsh/sudoku-2019-12-16
+
+	modified:   bin/dinkum_sudoku_solve_known.py
+	modified:   board.py
+	modified:   rcb.py
+	modified:   test_data/test_puzzles.py
+
+When back to where I was.  all unit tests pass and
+solve_known solves 3 and can't solve globe saturday.
+
+Let's trace it again.
+The various Cell.set(7) should:
+    sets value, empties possible_values
+
+    call board.a_cell_was_set()
+
+board.a_cell_was_set(cell)
+    removes cell from unsolved
+    iterate thru solved_cell.rcbs calling
+            rcb.a_cell_was_set
+
+
+rcb.a_cell_was_set(cell)
+    removes cell from unsolved_cells
+    del unsolved_value_possibles[set_cell.value]
+    iterates thru unsolved_value_possibles removing set_cell
+
+nobody calls rcb.remove from possibles()
+
+Should be:
+rcb.a_cell_was_set(set_cell):
+    remove cell from unsolved_cells
+    del unsolved_value_possibles[set_cell.value]
+    self.remove_from_possibles(set_cell.value, set_cell)
+
+
+Globe puzzle solved!
+kato still not.
+
+commit "sat globe solved"
+
+
+2019-12-18 tc
+
+<todo> check out
+       codimension
+       http://codimension.org/documentation/visualization-technology/python-code-visualization.html
+       IDE: Side by side editor and graphic representation of the same.
+       Looks kind of nice.
+       Easy install to virtual environment:
+              $ cd
+              $ virtualenv -p python3 venvp3
+
+              $ source ~/venvp3/bin/activate
+              (venvp3) $ pip install wheel
+              (venvp3) $ pip install codimension
+
+2019-12-19 tc
+
+Went thru LibreCad manual up to dimensioning.
