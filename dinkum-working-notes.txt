@@ -2948,7 +2948,7 @@ Implemented the change in stopping the Board.solve() loop
 and got all kinds of wierdness.  unittests sometimes fail
 and infinite loop on kato_puzzle.
 
-<todo> ../bin/dinkum-python-run-all-unit-tests --verbose
+<done> ../bin/dinkum-python-run-all-unit-tests --verbose
        runs test twice: test_is_solved_and_cnt (dinkum.sudoku.board.Test_board) ... test_is_solved_and_cnt(self) :
 
 One of the board unit test failures was bug in test code where a input spec list was modified.
@@ -3016,3 +3016,409 @@ Should I do it manually or write a program.
 Start out manually.
 Didn't solve the sample puzzle which is the same
 as our known kato puzzle.
+
+2020-02-01 tc
+
+Well.. back to it after a nice vacation.
+Can't really think of more solution algorithms.
+Only one I know of that I'm missing is pairing up
+some pairs and projecting it.  It didn't solve the
+kato problem.
+
+So... I need to exaustively try all combinations.
+
+move current solve() contents to solve_by_deduction()
+
+Here's an algorithm:
+    solve()
+        solve_by_deduction(), return on success
+
+        cell_num = most_constrained_cell_num()
+                 # pick unsolved cell with fewest possibles
+                 # if more than one
+                 #     break tie with lowest total unsolved in RCB
+                 # if still more than one
+                 #     pick the first
+
+       # Try all possibles
+       solve_results = []_
+       for v in cell.possibles.value
+           b=Board(self) # copy
+           b.cells[cell_num].set(v)
+           solve_results.append( b.solve() )  # recurse
+
+       if all unsolved
+          return unsolvable
+       if 1 solved
+          self = b
+          return solved
+       if >1 solved
+          return/raise multiple solutions
+
+x solve() ==> solve_by_deduction()
+
+x time board copy constructor         
+    Board(bd_to_copy):         1855 microseconds
+    copy.deepcopy(bd_to_copy): 4435 microseconds
+
+
+x  implement board =                  use copy.deepcopy()
+punt  replace deepcopy in current code
+
+<done> fix dinkum-python-run-all-unittests.  It fails with test_bin/whatever.py
+       write a python program.
+
+
+i changed copy.deepcopy(self) to Board(self) and
+solving kato_puzzle ran forever.
+
+2020-02-02 tc
+
+Sigh... two problems.
+
+I can't run unittests... have to write my own dinkum_python_run_unittests using TestSuite I think.
+Discover and fix the anomoly that copy.deepcopy(bd_to_copy) produces different results than Board(bd_to_copy)
+Then go back an finish implementing the exhaustive solution.
+
+dinkum_python_run_unittests  --root_dir dir --tests test_a, test_b  --args arguments to test runner
+    Builds TestSuite of all *.py in root_dir tree with class Test_*
+    Issue warning if Test_* where * != module name
+    ? Issue warning if *.py doesn't have testcode if not in *bin directory
+    --suppress-warnings
+    --list  shows test
+
+
+Ugh.  I started implementing with TestLoader.discover.  but I get duplicate entries.:
+    ~/projects/dinkum/project$ dinkum_python_run_unittests.py  2>&1 | grep test_str_constructor
+        test_str_constructor (sudoku.board.Test_board)
+        test_str_constructor (dinkum.sudoku.board.Test_board)
+        test_str_constructor (dinkum.sudoku.board.Test_board)
+Didn't see anything on google about it.  Just implement my own I guess.
+
+2020-02-03 tc
+
+After writing my own discover.... turns out it had duplicates as well.
+It was a bug printing the contents of the test suite.
+I guess I'll leave my implementation as I can can filter/test intermediate results.
+
+Sigh... when replace my printer with one from net [dinkum.unittest.utils.tests_from_testsuite() ]
+I still get dups.  Lists some tests 4 times.
+
+It's in unittest.TestLoader.loadTestsFromName()
+if you pass it board.py, get duplicated test_XXX() entries.
+
+The bug (I think) is the loadTests...() does an import.
+Those import define additional TestCases.
+
+I guess I have to avoid putting duplicate tests in the test suite myself --or--
+better, only put in whose module names match. But it looks like test runner sorts out
+the duplicates.  So the only problem is the listing.
+
+I was wrong... they are being run twice as well.
+
+I'm quite tired.  I wrote the code to filter dups and it didn't work.
+Might be better to filter by only adding tests from <module> while scanning <module.py>
+
+2020-02-04 tc
+
+Was removing duplicates in the wrong place.
+
+<moved> move full_dotted_modulename() from project.dirs to python.modnames ?
+
+Added a prune function and it works .... except
+unittest's for dinkum.unittest.dirs (where prune lives) fail as not importable
+when run under dinkum_python_run_unittests, but work fine when invoked directly.
+
+I think the answer is here:
+    https://stackoverflow.com/questions/35034664/unittest-is-not-able-to-discover-run-tests
+Nope, it's not.  BTW I get same problems in python -m unittest discover
+
+Answer in loader.errors
+
+Finally, fixed by changing test code to user full module path.
+
+what next?
+x   git commit all "initial dinkum_run_unittests.py, sudoku code in progress, possibly broken"
+x   move full_dotted_modulename() from project.dirs to python/modnames.py ?
+x   move dinkum_python_run_unittests from dinkum/bin => dinkum/mas_unittests/bin
+x   remove top_project_dir() from dirs.py
+x       walk up directories that are packages until get
+x       a dir in PYTHONPATH. ? Ignore . -or- do last
+x   Add --verbose [n], --failfast
+m   Specify tests to run
+m   Add dinkum warnings and --nowarnings
+m       no unittest code (except *bin/*, __init__.py ?)
+m       Test_foo is not Test_<modulename>
+m       foo.py is NOT executable
+m       foo.py doesn't run test code?
+m   Fix up main() error returns
+
+sigh... unittest wasn't a package (no __init__.py).  When I added __init__.py,
+I broke something.
+
+It fails when run in dinkum directory.  An import of unittest picks up
+dinkum/unittest instead of system unittest.
+
+Probably best answer is to rename dinkum/unittest
+Done..  ==> mas_unittest
+
+2020-02-05 tc
+
+When I changed the algorithm for full_dotted_modulename() to NOT use
+dinkum or PYTHONPATH, but to just walk up directory path of the module
+and stop when hit a non-package dir (__init__.py).  That broke
+the executables in the bin directory:
+
+            print ("###########################")
+            for test in tests_from_TestSuite(module_test_suite) :
+                print (type(test))
+                print (test)
+                print (test.id)
+            print ("###########################")
+            for (i,e) in enumerate(loader.errors) :
+                print (i, e)
+            print ("###########################")
+
+###########################
+<class 'unittest.loader._FailedTest'>
+dinkum-install-from-git (unittest.loader._FailedTest)
+<bound method TestCase.id of <unittest.loader._FailedTest testMethod=dinkum-install-from-git>>
+###########################
+0 Failed to import test module: dinkum-install-from-git
+Traceback (most recent call last):
+  File "/usr/lib/python3.6/unittest/loader.py", line 153, in loadTestsFromName
+    module = __import__(module_name)
+ModuleNotFoundError: No module named 'dinkum-install-from-git'
+
+###########################
+dinkum-install-from-git (unittest.loader._FailedTest) ... ERROR
+
+Need to special case that.
+
+2020-02-06 tc
+
+Ran into difficulty.  Can't easily go back from "test in test_suite" to
+filename so can detect if it's a bin or not.
+
+Sigh... I guess I'll test for importability myself.
+Got it to work.  Had to add file named "NO_PYTHON_UNITTESTS"
+in a directory to suppress looking for unit tests 
+
+done.
+
+In process of handling os exit codes:
+  change import errors into failures (this matches unittest vocabulary)
+  make them work with --failfast.
+
+
+2020-02-08 tc
+Still working on dinkum_python_run_unittests.py
+
+create bin/support:
+    move support functions there
+    add class FEW (failures,errors,warnings)
+
+Left <moved>
+   Specify tests to run
+   Fix up main() error returns
+   Add dinkum warnings and --nowarnings
+       no unittest code (except *bin/*, __init__.py ?)
+       Test_foo is not Test_<modulename>
+       foo.py is NOT executable
+       foo.py doesn't run test code?
+
+<done> why multiple entries in sys.path of bin dir?
+tc@gosnold:~/projects/dinkum/python$ ~/projects/dinkum/python/bin/dinkum_python_run_unittests.py 
+cwd:  /home/tc/projects/dinkum/python
+sys.path:
+/home/tc/projects/dinkum/python/bin    exec location
+/home/tc/projects                      added by bash.rc
+/home/tc/projects/dinkum/python/bin    cwd????
+...
+
+tc@gosnold:~/play$ ~/projects/dinkum/python/bin/dinkum_python_run_unittests.py 
+cwd:  /home/tc/play
+sys.path:
+/home/tc/projects/dinkum/python/bin
+/home/tc/projects
+/home/tc/play
+
+2020-02-09 tc
+Spent some time unsuccessfully trying to figure this out.
+          ~/play/path.py
+              import sys
+              def p() :
+                  for (i,p) in enumerate(sys.path) :
+                      print (" ", i, p)
+              p()
+          
+
+python3
+
+tc@gosnold:~$ python3 -m play.path | head -3
+  0                             # script directory
+  1 /home/tc/projects           # PYTHONPATH
+  2 /home/tc                    # CWD ?????
+  3 /usr/lib/python36.zip
+  4 /usr/lib/python3.6
+  5 /usr/lib/python3.6/lib-dynload
+  6 /usr/local/lib/python3.6/dist-packages
+  7 /usr/lib/python3/dist-packages
+
+dummy@gosnold:~$ python3 -m play.path
+  0                             # script directory
+  1 /usr/lib/python36.zip
+  2 /usr/lib/python3.6
+  3 /usr/lib/python3.6/lib-dynload
+  4 /usr/local/lib/python3.6/dist-packages
+  5 /usr/lib/python3/dist-packages
+
+something in environment causing it
+tc@gosnold:~$ python3 -E -m play.path
+  0                             # script directory
+  1 /usr/lib/python36.zip
+  2 /usr/lib/python3.6
+  3 /usr/lib/python3.6/lib-dynload
+  4 /usr/local/lib/python3.6/dist-packages
+  5 /usr/lib/python3/dist-packages
+
+-s     : don't add user site directory to sys.path; also PYTHONNOUSERSITE
+NOT user site directory
+tc@gosnold:~$ python3 -s -m play.path
+  0 
+  1 /home/tc/projects                
+  2 /home/tc                  # CWD ?????
+  3 /usr/lib/python36.zip
+  4 /usr/lib/python3.6
+  5 /usr/lib/python3.6/lib-dynload
+  6 /usr/local/lib/python3.6/dist-packages
+  7 /usr/lib/python3/dist-packages
+
+-S     : don't imply 'import site' on initialization
+tc@gosnold:~$ python3 -S -m play.path
+  0 
+  1 /home/tc/projects
+  2                            # CWD ?????
+  3 /usr/lib/python36.zip
+  4 /usr/lib/python3.6
+  5 /usr/lib/python3.6
+  6 /usr/lib/python3.6/lib-dynload
+
+
+An the answer is........
+    A trailing : on PYTHONPATH causes current working directory to be insert
+    AT end of PYTHONPATH directories
+
+    A leading : on PYTHONPATH causes current working directory to be inserted
+    BEFORE the start of PYTHONPATH directories
+
+See
+https://stackoverflow.com/questions/33615156/why-does-pythonpath-with-trailing-colon-add-current-directory-to-sys-path?rq=1
+
+The fix in bash.rc:
+    export PYTHONPATH="/some/path${PYTHONPATH+":"}${PYTHONPATH-}"
+    # The PYTHONPATH+ token inserts : if PYTHONPATH is defined
+    # The PYTHONPATH- insert prior PYTHONPATH and doesn't generate
+    #    an error in presence of "set -u" AND PYTHONPATH is not defined
+
+Back to dinkum_python_run_unittests
+
+Left <moved>
+   Specify tests to run
+   Fix up main() error returns .... implemented, needs testing 
+   Add dinkum warnings and --nowarnings
+       no unittest code (except *bin/*, __init__.py, test_data ?)
+       Test_foo is not Test_<modulename> ?except tests/*.py?
+       foo.py is NOT executable
+       foo.py doesn't run test code?
+   fix up --help to talk about warnings
+   
+2020-02-13 tc
+
+It's duplicating tests:
+    dinkum.python.bin.support.Test_support.test_need_immediate_os_return
+    dinkum.python.bin.support.Test_support.test_os_return_code
+    dinkum.python.bin.support.Test_support.test_update_from_TestResult
+    support.Test_support.test_need_immediate_os_return
+    support.Test_support.test_os_return_code
+    support.Test_support.test_update_from_TestResult
+
+It's because dinkum.python.bin imports support (without full dotted path)
+and see's it twice.
+
+Bug fix: make testing from duplicates convert to full package path before
+         comparision
+
+         <done>
+         full_dotted_modulename(pathname)
+             now constructs pkg.pkg from files that have __init__.py in them
+             import may fail if 
+                     # where a..d are packages
+                     PYTHONPATH ==> .../parent/a
+                     a.b.c.d.mod won't import
+                     b.c.d.mod   will import
+
+             So construct full dotted path as do now
+               while (dotted.path)
+                 for p in PYTHONPATH :
+                     if p+dotted.path.mod exists :
+                         return dotted.path
+                 remove lead (left component) of dotted_path
+             just return the full dotted path
+
+2020-02-14 tc
+2020-02-16 tc
+
+I was getting unittest failures in modnames.
+Had some real bugs (Falsely passing test),
+but then discovered that since python 3.3 you DO NOT NEED
+a __init__.py to import something.  Just the directory.  Sigh.
+
+Got to remove some tests.
+
+Was still trying to get duplicate support tests removed.
+I think I'm missing a call somewhere os.path.abs_path()
+
+2020-02-17 tc
+
+What a mess.  The stack is deep with many forks.
+
+<todo>
+x    I need to deal with package dirs no longer require an __init__.py
+x    (as of python 3.3).
+x    fix up currently failing tests
+x    delete test_data/not_a_package_dir and deal fix up tests
+x    search all code for __init__.py and remove
+x   probably delete (or change algorithm) is_package_dir()
+
+    Clean up vocabulary/usage
+x        dotted_module_name    a.b.c.mod or mod
+x        module_name           mod
+x        abs_filename          /a/b/c/d        
+x        Don't return (dotted_path, module) ... return dotted_module_name
+punt     create module_name_from_dotted_module_name(dotted_module_name)
+
+git commit -m "reworking dinkum_python_run_unittests.  All unittests past, but still some debug output"
+
+x    I'm half way thru properly pruning duplicate support tests:
+x    need an absolute path somewhere
+x    need to use the longest dotted_modulename in case of duplicates
+x    !! got automagically fixed by dotted_module_name_from_filename
+x    !! returning longest path if there are duplicate paths
+
+git commit -a -m "dinkum_python_run_unittests: unittests pass, works"
+[master 8279cf8] dinkum_python_run_unittests: unittests pass, works
+ 3 files changed, 4 insertions(+), 20 deletions(-)
+
+   Specify tests to run
+
+   Fix up main() error returns .... implemented, needs testing 
+   Add dinkum warnings and --nowarnings
+       no unittest code (except *bin/*, __init__.py, test_data ?) [refactor bin from support.py]
+       Test_foo is not Test_<modulename> ?except tests/*.py?
+       foo.py is NOT executable
+       foo.py doesn't run test code?
+   fix up --help to talk about warnings
+
+
+
