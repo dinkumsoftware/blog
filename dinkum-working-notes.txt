@@ -3383,7 +3383,7 @@ I think I'm missing a call somewhere os.path.abs_path()
 
 What a mess.  The stack is deep with many forks.
 
-<todo>
+<moved>
 x    I need to deal with package dirs no longer require an __init__.py
 x    (as of python 3.3).
 x    fix up currently failing tests
@@ -3410,15 +3410,158 @@ git commit -a -m "dinkum_python_run_unittests: unittests pass, works"
 [master 8279cf8] dinkum_python_run_unittests: unittests pass, works
  3 files changed, 4 insertions(+), 20 deletions(-)
 
-   Specify tests to run
+<moved>
+x    --start_dir -sd
+x
+x   --import_dir -id
+x   Specify tests to run: dfpmTCtf
+x
+x     not full path anymore
+x     cd ~/projects/dinkum
+x     ~/projects/dinkum/python/bin/dinkum_python_run_unittests.py --list
+x         dinkum.python.modnames.Test_modnames.test_module_name_from_filename
+x         support.Test_support.test_need_immediate_os_return
+x         support.Test_support.test_os_return_code
+x         support.Test_support.test_update_from_TestResult
+x         dinkum.mas_unittest.utils.Test_utils.test_TestLoader_err_msg
+x
+m  Fix up main() error returns .... implemented, needs testing 
+m   Add dinkum warnings and --nowarnings
+m      no unittest code (except *bin/*, __init__.py, test_data ?) [refactor bin from support.py]
+x      Test_foo is not Test_<modulename> ?except tests/*.py?
+x      foo.py is NOT executable
+x      foo.py doesn't run test code?
+x   fix up --help to talk about warnings
 
-   Fix up main() error returns .... implemented, needs testing 
-   Add dinkum warnings and --nowarnings
-       no unittest code (except *bin/*, __init__.py, test_data ?) [refactor bin from support.py]
-       Test_foo is not Test_<modulename> ?except tests/*.py?
-       foo.py is NOT executable
-       foo.py doesn't run test code?
-   fix up --help to talk about warnings
+2020-02-18 tc
+2020-02-19 tc
 
+Got all the filter code written and unittested, but doesn't produce the desired results.
+I think mainly because not getting modulename from the test, but from passed in argument.
+Should probably just pass in test, get modulename from the test, and filename from modulename.
+
+tomorrow....
+2020-02-20 tc
+
+<done> when all done with support bug fix.  Move it to python.run_ut_support.py
+
+Got the test selection code working.
+git commit -m "dinkum_python_run_unittests: test selection working"
+
+Got truncated support module names working
+git commit -m "dinkum_python_run_unittests: used longest dotted_module_name"
+
+move python/bin/support.py    to
+     python/rut_support.py
+git commit -m "moved python/bin/support.py to python/rut_support.py"
+
+
+Got warning detection almost working.  Got stuck on trying to detect
+no unittest code as it loader doesn't return a test for it.
+
+If it's executable, just run the *.py.  Capture output.
+grep for "ran XXX tests"
+if zero, it's no good.
+
+2020-02-22 tc
+
+additions to dinkum_python_run_unittests coded, but not tested.
+Working on coding_standards.py
+
+All the warning code works.
+
+git commit -m "dinkum_python_run_unittests ALMOST done"
+
+Here is what's left to do (I think)
+<moved>
+x        overall scheme needs to be re thought.  Can't detect no unit tests
+x        at end of loop as there's won't be any tests there to dig the filename
+x        out of.  I think we change to:
+x            loadTestsFromFile
+x            filter it
+x            check for warnings
+x            add to final suite
+x            don't check for warnings at the end
+m   implement exception bin (except *bin/*, __init__.py, test_data ?) [refactor bin from support.py]
+m   Make sure fdTtm is used
+x    --import path (check it is being used and/or test)
+m    --nowarnings (check --help output for consistency)
+m                  suppress warnings on --list ?
+m    Fix up main() error returns .... implemented, needs testing
+m    ? fix up --help to talk about warnings
+m    commit
+m    remove warnings from other code
+
+2020-02-23 tc
+
+Here is the algorithm rework:
+
+Don't currently filter based on directory.
+
+os.walk
+x  continue on NO_PYTHON_UNITTESTS
+x  iterate over files
+x    continue on not *.py
+x    continue is_filename_filtered()
+              if no filters       return False
+              if no file filters, return False
+              filter based on filename alone
+x    Test for importability
+x    ts=loadTestsFromFile()
+x    filter again for test filters ts=filter_TestSuite
+x     Check for warnings
+
+remove dups (but probably don't have to)
+list
+print warnings
+run
+
+curr results 90 tests/ 5 warnings
+
+Getting duplicate warnings:
+#### /home/tc/projects/dinkum/keno/__init__.py
+#### /home/tc/projects/dinkum/keno/keno_best_bet.py
+dinkum.keno.keno.KenoTest.test_ncr
+dinkum.keno.keno.KenoTest.test_odds
+WARNING:Not executable module_name:dinkum.keno.keno filename:/home/tc/projects/dinkum/keno/keno.py
+WARNING:Bad TestCase name: KenoTest module_name:dinkum.keno.keno filename:/home/tc/projects/dinkum/keno/keno.py
+#### /home/tc/projects/dinkum/keno/keno.py
+dinkum.keno.keno.KenoTest.test_ncr
+dinkum.keno.keno.KenoTest.test_odds
+WARNING:Not executable module_name:dinkum.keno.keno filename:/home/tc/projects/dinkum/keno/keno.py
+WARNING:Bad TestCase name: KenoTest module_name:dinkum.keno.keno filename:/home/tc/projects/dinkum/keno/keno.py
+Fixed, forgot an argument to loadTestsFromFile()
+
+Now need to chase:
+x    why don't /bin/*.py get a warning.
+2020-02-24 tc
+
+fixed this, removed exemption from inline code.
+
+<todo>      
+x    exception_dirs[] and exception_files[]
+x    implement exception bin (except *bin/*, __init__.py, test_data ?) [refactor bin from support.py]
+x     commit -m "unittest dirs/file exceptions for coding standards"
+x     Made E/F/W output be in fixed width columns
+x     commit -m "run unittest output in fixed width columns"
+x
+x     Make sure fdTtm is used
+x    --nowarnings (check --help output for consistency)
+x                  suppress warnings on --list ?
+x    Fix up main() error returns .... implemented, needs testing
+x    EXIT STATUS
+x  x  0  No failures, errors or warnings
+x  -  1  Some unknown exception raised
+x  -  2  Some kind of command line problem
+x     3  Errors occurred                            import_errors.py
+x     4  Failures occurred (but no Errors)          test_failures.py
+x     5  Warnings occurred (but no Errors/Failures and NOT ignoring_warnings)
+                                                   testcase_misnamed.py
+x   ? fix up --help to talk about warnings
+x    remove warnings from other code
+
+DONE!
+
+Back to sudoku.... but not today.
 
 
