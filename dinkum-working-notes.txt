@@ -1,5 +1,5 @@
 dinkum-working-notes.txt
-Copyright 2014-2019 Dinkum Software
+Copyright 2014-2020 Dinkum Software
 
 A running blog-like account of DinkumSoftware's FOSS activity.
 https://github.com/dinkumsoftware/dinkum-working-notes
@@ -3564,4 +3564,11 @@ DONE!
 
 Back to sudoku.... but not today.
 
+2020-04-10 Installed rclone to move files to Google Drive.  see private
+2020-04-13 diddled LibreOffice Calc. Made ctrl-R fill right. See private.
+2020-04-17 Installed chrome extension to select URL on new tab.  See private.
 
+<todo> go back thru this file and move local computer config to private
+       with just a note/pointer here.
+
+    
