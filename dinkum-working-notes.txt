@@ -3571,4 +3571,111 @@ Back to sudoku.... but not today.
 <todo> go back thru this file and move local computer config to private
        with just a note/pointer here.
 
-    
+2020-04-21 tc
+
+simple-scan on ubuntu has started INTERMITTENTLY to fail.  After
+working fine previously, sometime it will say scanner not detected.
+I fixed it once by powering computer and scanner on/off and it
+worked again.
+
+On startup says:
+   Ready to Scan
+   HP Photosmart_C7200_series
+
+Press scan.
+Error msg:
+   Failed to scan
+   Unable to connect to scanner
+
+syslog says on failure:
+       Apr 21 10:02:54 gosnold simple-scan: failed to open scan channel: scan/sane/sclpml.c 382
+
+sudo sane-find-scanner:
+    could not fetch string descriptor: Input/output error
+    could not fetch string descriptor: Input/output error
+    found USB scanner (vendor=0x0bda, product=0x8153) at libusb:002:020
+
+sudo scanimage -L
+     $ sudo scanimage -L
+     device `hpaio:/net/Photosmart_C7200_series?ip=10.23.0.150' is a Hewlett-Packard Photosmart_C7200_series all-in-one
+
+No 5min solutions on the net.  Someone suggested:
+
+gscan2pdf
+    http://ubuntuhandbook.org/index.php/2018/12/gscan2pdf-2-2-0-released-install-ubuntu/
+
+sudo add-apt-repository ppa:jeffreyratcliffe/ppa
+sudo apt-get update
+sudo apt-get install gscan2pdf
+
+No install issues.
+
+gscan2pdf Runtime Issue:
+Error opening device: opening device 'hpaio:/net/Photosmart_C7200_series?ip=10.23.0.150': Invalid argument
+
+hmm Appears a problem with underlying layer.
+
+Gave up and powered off both computer and scanner.
+It worked.
+I noticed that scanner was saying "scanning" as I went to power it off.
+I'm guessing if I hit cancel button on scanner, it would have worked.
+I'll try that on next failure.
+
+2020-05-05 tc
+
+repo is a multiple repository management tool, most
+ commonly used by the Android Open Source Project.
+ For more details, see using http://source.android.com/source/using-repo.html
+
+2020-05-05 tc
+
+Got annoyed by Gnome in clicking on an executable and it keep asking me to
+launch in terminal, display, or run.
+
+https://superuser.com/questions/763554/how-to-make-it-so-bash-runs-instead-of-asking-where-to-run-upon-selection-from-f
+
+You can't do it with the bash script directly, you will need to create
+a .desktop file for it instead. For example, if your bash script is
+saved as /home/cenoc/bin/script.sh, create a file called
+script.desktop with the following contents:
+
+[Desktop Entry]
+Name=My script
+Comment=Describe your script here
+Exec=/home/cenoc/bin/script.sh
+Terminal=false
+Type=Application
+Then, double click on script.desktop and your script should be executed.
+
+That worked.  Made a copy in dinkum/gnome/doc/gnome-cheatsheet.txt
+
+2020-05-21 tc
+I've had problems with using cups.  It asks for username and
+password when I try to modify some and there's no place
+to enter it.
+
+In https://ubuntuforums.org/showthread.php?t=2388741 ,
+https://ubuntuforums.org/member.php?u=223945 said:
+
+I edited /etc/cups/cupsd.conf and changed the AuthType to None and commented the Require user @SYSTEM:
+
+Was:
+<Limit CUPS-Add-Modify-Printer CUPS-Delete-Printer CUPS-Add-Modify-Class CUPS-Delete-Class CUPS-Set-Default CUPS-Get-Devices>
+AuthType Default
+Require user @SYSTEM
+Order deny,allow
+</Limit>
+
+Should be:
+<Limit CUPS-Add-Modify-Printer CUPS-Delete-Printer CUPS-Add-Modify-Class CUPS-Delete-Class CUPS-Set-Default CUPS-Get-Devices>
+AuthType None
+# AuthType Default
+# Require user @SYSTEM
+Order deny,allow
+</Limit>
+
+# Make the server read it
+sudo service cups restart
+
+Worked like a champ.
+put it in cups/doc/HOWTO
