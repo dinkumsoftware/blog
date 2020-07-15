@@ -3679,3 +3679,67 @@ sudo service cups restart
 
 Worked like a champ.
 put it in cups/doc/HOWTO
+
+2020-07-14 tc
+Fixing the Cups where you can't do root functions.
+
+somebody said cups 18.10 version works.
+build from source:
+https://launchpad.net/ubuntu/+source/cups/2.2.8-5ubuntu1.2
+
+/home/tc/projects/cups/cups-2.2.8
+
+list of apt installs.... I didn't do this
+can't find list right now
+
+./configure
+make
+
+make check
+LOTS of failures.
+
+make deb    is suppose to generate a *.deb file.
+got an error.... sigh
+due to not loading the apts.
+
+On a stock Ubuntu install, the following command will install the required
+prerequisites:
+
+    sudo apt-get install autoconf build-essential libavahi-client-dev \
+         libgnutls28-dev libkrb5-dev libnss-mdns libpam-dev \
+         libsystemd-dev libusb-1.0-0-dev zlib1g-dev
+    sudo apt install epm
+
+make clean
+./configure
+make
+make check # still get failures
+make deb
+    still failed
+
+make: epm: Command not found
+Makefile:318: recipe for target 'deb' failed
+make: *** [deb] Error 127
+
+sudo apt install epm
+make deb
+Building Debian cups-lpd-2.2.8-linux-4.15-x86_64 binary distribution...
+found dists/..filetrees...
+couldn't find a *.deb file
+it is suppose to be in dists/
+
+This is spiralling down hill.  Maybe another approach is better.
+
+firefox works with cups.... but it is so old can' import
+chrome bookmarks.
+
+now the mystery of multiple prints is solved.  cups add printer found 3:
+    ipp: driverless
+    lpd:
+    dnssd:
+
+ipp is best according to:
+https://askubuntu.com/questions/401119/should-i-set-up-my-cups-printing-to-use-ipp-lpd-or-url
+
+fixes my cups problem.
+
