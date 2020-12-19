@@ -3743,3 +3743,78 @@ https://askubuntu.com/questions/401119/should-i-set-up-my-cups-printing-to-use-i
 
 fixes my cups problem.
 
+2020-10-01 tc
+
+Back to some code development.
+Get the dinkum code to install.
+
+environment variables:
+    DINKUM_ROOTDIR    ~/.dinkum
+    PATH              ~/.dinkum/dinkum/bin     dinkum_codedir()/bin
+    PYTHONPATHS       ~/.dinkum                dinkum_rootdir()
+
+    When run from git, add DINKUM_CODEDIR
+
+dinkum-install
+    from : Installs from code tree that the running dinkum-install.py is in
+           Could be from prior installation or local git
+
+    future:
+        from=local_fs  # same as default
+
+        from=url
+            git repo
+            web page
+
+    to: ~/.dinkum/dinkum
+
+
+Algorithm:
+    note: should support dry-run and verbosity
+
+    if not already_copied :
+        backup if it exists # .bashrc and .profile?
+        Copy from ==> to    # warn if copying over it self, but keep churning
+                            # Detect if copying from git and omit files
+                            # Prune git files and DO_NOT_INSTALL
+        remove all DINKUM_xxx environment vars (backup and restore on failure)
+        add environment variables above for to.
+        modify PYTHONPATHS[]
+
+    to/bin/dinkum-install( already_copied=True )
+
+    make( from_scratch=True)    # Build whatever
+
+    self-test ?
+
+    edit .bashrc, .profile ...
+
+<todo> there is some prior install work in project/
+       bin/dinkum-install-from-git    use contents and delete
+       dirs.py                        modify it to use:
+                                         dinkum_rootname a la ~/.dinkum
+       install.py                     move to install/install.py
+                                      prune dinkum_data and/or move to dirs.py
+                                      use install_from_git, but rename
+    
+2020-10-07 tc
+Tested all the exit paths in dinkum_exe.py template via manual inserts
+in main() from"
+dinkum/project/templates/python/test_data/test_python_exe.py-manualinserts.txt
+
+
+2020-11-12 tc
+Installing python coverage for eclipse/pydev
+Shows test coverage, i.e. which statements executed
+
+https://www.pydev.org/manual_adv_coverage.html
+https://coverage.readthedocs.io/en/coverage-5.3/#quick-start
+
+pip install coverage
+eclipse (maybe restart)
+eclipse window->show veiew -> pydev -> coverage
+
+Error: coverage module could not be imported
+
+
+
