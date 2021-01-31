@@ -3879,15 +3879,97 @@ My timing for 800 nodes is 0.140 secs.
 add the notion of density #paths/#nodes^2
 
 <todo>
-  squash the commits
-  See what density of:
-    my random 800
-    codewars sparse 800
-    codewars dense  800
-  add a density argument to random graphs
+x squash the commits
+x  See what density of:
+x    my random 800             0.50
+x    codewars sparse 800       0.70
+x    codewars dense  800       0.0
+x  add a density argument to random graphs
+x  make my random take a density argument
+
+   committed add density
+   0.7 random 800 time:  0.130 to 0.175 secs
+
   Speed up dense 800
       pre sort node list, most paths first
       linked list, requires NodeCollection()
 
-
+note: with stub strongly connected (return []
+      and printing density
+      10.6 sec run time for codewars attempt.
     
+Spending 80% of the time constructing the inverse graph.
+
+So... need to eliminate ins.
+It only exists to make merging easier.
+So...
+   keep list (nodes) indexed by node# of all the Nodes
+   Node has reachable_node_nums.
+   subsume does a lookup thru nodes to go from node_num to Node
+   when it subsumes a node, it replaces nodes[subsumed node] with node
+   it replaces ins with test of self in reachable_node.node_nums
+
+2021-01-30 tc
+strongly connected components.
+Been struggling with Nodes for a couple of days.
+As usual, bad algoritm.  Abandon classes.
+
+Just work with graph.  When subsume, replace graph[sn] with graph[n]
+
+works.  but still times out even with all debugging printout stripped.
+800 dense nodes is like 120ms (80ms - 130ms)
+commit 0bd0dfaee5cbdb5ea636fd3a4702e76f688d1b60 (HEAD -> master)
+
+A couple of speedups:
+    my       800                0.70   120ms
+    codewars 800 large  dense   0.70   190ms   9s/10 => 90ms
+    codewars 900 sparse dense   0.00   205ms
+
+Log
+#nodes: 900
+execution time: 751 ms
+
+sparse on codewars:
+#nodes: 799 #paths: 1998
+        density=0.00313
+
+execution time: 489 ms
+
+bug fix in random_graph()
+
+dense  800 (0.y  ) =>  86ms
+
+sparse 800 (0.006) => 125ms
+       800 (0.004) => 141ms
+
+Can't reproduce the failure here.
+
+Current timing on code wars:
+    fixed test                  2 ms
+    random tests
+          90 small size        44 ms
+          10 large dense        8.3
+          10 large sparse       ??
+     times out in 12 secs
+
+     req total large sparse time = 3 secs
+     time for large sparse <= 0.300
+     
+times out:
+Testing on sparse large-size graphs
+Log
+execution time: 651 ms
+Test Passed
+Log
+execution time: 1199 ms
+Test Passed
+Log
+execution time: 554 ms
+Test Passed
+
+2021-01-31 tc
+
+codewars Strongly connected works!
+successfully submitted to codewars.
+
+dense 800 random runs in about 60ms.
