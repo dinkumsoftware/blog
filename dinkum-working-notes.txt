@@ -3973,3 +3973,87 @@ codewars Strongly connected works!
 successfully submitted to codewars.
 
 dense 800 random runs in about 60ms.
+
+2021-02-01 tc
+Fixed up music player on gosnold.
+rhythmbox wouldn't shuffle all albums.
+
+Found command line based music player:
+    randomplay
+        install: sudo apt install randomplay
+        doc: http://manpages.ubuntu.com/manpages/bionic/man1/randomplay.1.html
+
+
+Trying to pair my samsung earbugs to gosnold (ubuntu 18.04) and failing.
+
+wouldn't pair in:
+    ubuntu settings bluetooth
+    bluetoothctl
+
+earbuds: samsung SM-R175
+         purchased within last year
+
+manual only talks about pairing with android devices.
+Suppose to download Galaxy Wearables app.
+
+Using bluetoothctl:
+[Bluetooth Mouse M336/M337/M535]# devices
+Device 58:8E:81:EC:7F:9D AMVC9608
+Device 34:88:5D:3D:43:33 Bluetooth Mouse M336/M337/M535
+Device 2C:41:A1:CC:B4:1D LE-black box
+[Bluetooth Mouse M336/M337/M535]# info 58:8E:81:EC:7F:9D
+Device 58:8E:81:EC:7F:9D (public)
+	Name: AMVC9608
+	Alias: AMVC9608
+	Paired: no
+	Trusted: yes
+	Blocked: no
+	Connected: no
+	LegacyPairing: no
+
+[Bluetooth Mouse M336/M337/M535]# pair 58:8E:81:EC:7F:9D
+Attempting to pair with 58:8E:81:EC:7F:9D
+
+Failed to pair: org.bluez.Error.AuthenticationCanceled
+Attempting to pair with 58:8E:81:EC:7F:9D
+[CHG] Device 58:8E:81:EC:7F:9D Connected: yes
+Failed to pair: org.bluez.Error.AuthenticationFailed
+[CHG] Device 58:8E:81:EC:7F:9D Connected: no
+
+sign... the problem was with earbuds being previously paired with something.
+answer is: with earbuds in the ear
+           press and hold BOTH buttons until get a constant sound
+           this means buds are pairing.
+
+2021-02-05 tc
+
+On my ubuntu 18.04, got annoyed when window is maximized when touch the
+top edge.  Tweaks doesn't seem to disable it.
+
+https://askubuntu.com/questions/1029168/how-do-i-disable-the-window-resizing-when-accidentally-touching-one-of-the-scree
+says:
+    gsettings set org.gnome.mutter edge-tiling false
+that did the trick!
+
+2021-03-24 tc
+
+Trying to programaticly create a ThunderBird email list.
+Per http://kb.mozillazine.org/Import_address_list_from_text_file
+Field order in an address book entry is:
+
+First Name, Last Name, Display Name, Nickname, Primary Email, Secondary Email, Screen Name, Work Phone, Home Phone, Fax Number, Pager Number, Mobile Number, Home Address, Home Address2, Home City, Home State, Home Zipcode, Home Country, Work Address, Work Address2, Work City, Work State, Work Zip, Work Country, Job Title, Department, Organization, Web Page 1, Web Page 2, Birth Year, Birth Month, Birth Day, Custom 1, Custom 2, Custom 3, Custom 4, Notes
+
+but that's not what I want.
+
+Not really any good tools.
+I tried MoreFunctionsForAddressbook 1.0b8 version (TB 14-59)
+from https://freeshell.de//~kaosmos/morecols-en.html
+
+sigh... I tried this before and it's not comptabile with thundrbird 68.10.0
+
+2021-03-25 tc
+I gave up and cut/paste manually.
+
+
+
+    
